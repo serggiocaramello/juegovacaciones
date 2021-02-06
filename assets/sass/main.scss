@@ -1,0 +1,16 @@
+// Utils
+@import "utils/functions", "utils/helpers", "utils/mixins", "utils/variables";
+
+// Vendors
+
+// Base
+@import "base/normalize", "base/typography";
+
+// Layout
+
+// Components
+@import "components/manojugador", "components/mazo", "components/tablero",
+  "components/pozo", "components/cambioJugador";
+// Pages
+
+// Themes
