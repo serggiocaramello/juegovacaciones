@@ -1,0 +1,22 @@
+{
+  "name": "uno_server",
+  "version": "0.0.1",
+  "description": "uno server para curso Frontend Sustantiva",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon ./index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "author": "ephie & icaeth",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "lodash": "^4.17.20"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}
