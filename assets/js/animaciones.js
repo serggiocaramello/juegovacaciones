@@ -235,3 +235,30 @@ mazo.addEventListener("click", () => {
       break;
   }
 });
+
+let isWaiting = false;
+let isRunning = false;
+let seconds = 20;
+let countdownTimer;
+let finalCountdown = false;
+
+function GameTimer() {
+  var minutes = Math.round((seconds - 30) / 60);
+  var remainingSeconds = seconds % 60;
+  if (remainingSeconds < 10) {
+    remainingSeconds = "0" + remainingSeconds;
+  }
+  document.getElementById("waiting_time").innerHTML =
+    minutes + ":" + remainingSeconds;
+
+  if (remainingSeconds < 10) {
+    document.getElementById("waiting_time").classList.add("timealert");
+  }
+  if (seconds == 0) {
+    finalCountdown = true;
+  } else {
+    isWaiting = true;
+    seconds--;
+  }
+}
+countdownTimer = setInterval(GameTimer, 1000);

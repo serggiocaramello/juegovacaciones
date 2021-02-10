@@ -429,6 +429,28 @@ body {
   background-color: rgba(255, 255, 255, 0.5);
 }
 
+.timer {
+  text-align: center;
+  width: 10%;
+  height: 5vh;
+  background-color: rgba(255, 255, 255, 0.8);
+  color: black;
+  -ms-flex-item-align: start;
+      align-self: flex-start;
+  font-size: larger;
+}
+
+.timealert {
+  text-align: center;
+  width: 10%;
+  height: 5vh;
+  background-color: rgba(255, 255, 255, 0.8);
+  -ms-flex-item-align: start;
+      align-self: flex-start;
+  color: #ff0000;
+  font-size: larger;
+}
+
 .pozo {
   margin-right: 0;
   width: 71px;
