@@ -6,7 +6,7 @@ let turno = 1;
 
 class Carta {
   constructor() {
-    this.anchoCarta = 50;
+    this.anchoCarta = 71;
     this.altoCarta = 100;
     this.separacionCartas = 10;
     this.cartasActivas;
@@ -172,6 +172,10 @@ class Jugador {
       if (this.id !== turno) {
         this.manoDeCartas.forEach((carta) => {
           carta.classList.add("facedown");
+          carta.style.backgroundImage =
+            'url("./assets/img/mazo/UNOPortada.svg")';
+          carta.style.backgroundSize = "cover";
+          carta.style.backgroundColor = "unset";
           carta.classList.remove("scale");
         });
       } else {

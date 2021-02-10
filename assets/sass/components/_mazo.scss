@@ -1,27 +1,27 @@
 .mazo {
-  background-color: #000;
   margin-right: 1em;
+  background-image: url("./../img/mazo/UNOPortada.svg");
+  background-size: cover;
 }
 
 .newcard {
-  width: 50px;
+  width: 71px;
   height: 100px;
   position: absolute;
   @extend .mazo;
   margin: 0;
-  background-color: green;
 }
 
-.card-1 {
-  background-color: steelblue;
-}
-.card-2 {
-  background-color: purple;
-}
-.card-3 {
-  background-color: yellow;
-}
+// .card-1 {
+//   background-color: steelblue;
+// }
+// .card-2 {
+//   background-color: purple;
+// }
+// .card-3 {
+//   background-color: yellow;
+// }
 
 .facedown {
-  background-color: #000;
+  // background-color: #000;
 }
