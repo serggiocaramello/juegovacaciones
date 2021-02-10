@@ -346,36 +346,20 @@ template {
 }
 
 .mazo, .newcard, .pozo {
-  background-color: #000;
   margin-right: 1em;
+  background-image: url("./../img/mazo/UNOPortada.svg");
+  background-size: cover;
 }
 
 .newcard {
-  width: 50px;
+  width: 71px;
   height: 100px;
   position: absolute;
   margin: 0;
-  background-color: green;
-}
-
-.card-1 {
-  background-color: steelblue;
-}
-
-.card-2 {
-  background-color: purple;
-}
-
-.card-3 {
-  background-color: yellow;
-}
-
-.facedown {
-  background-color: #000;
 }
 
 body {
-  background-image: url(/assets/img/bg.png);
+  background-image: url("./../img/bg.png");
   background-size: cover;
   background-repeat: no-repeat;
   display: -webkit-box;
@@ -398,6 +382,7 @@ body {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  position: relative;
 }
 
 [class*="infojugador"] {
@@ -445,9 +430,8 @@ body {
 }
 
 .pozo {
-  background-color: red;
   margin-right: 0;
-  width: 50px;
+  width: 71px;
   height: 100px;
 }
 
