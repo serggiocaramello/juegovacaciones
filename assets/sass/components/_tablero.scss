@@ -28,18 +28,18 @@ body {
   }
 }
 .infojugador1 {
-  bottom: 3rem;
+  bottom: 2rem;
 }
 .infojugador2 {
   transform: rotate(90deg);
-  right: 3rem;
+  right: -3rem;
 }
 .infojugador3 {
-  top: 3rem;
+  top: 2rem;
 }
 .infojugador4 {
   transform: rotate(-90deg);
-  left: 3rem;
+  left: -3rem;
 }
 
 .chat {
@@ -50,17 +50,17 @@ body {
 
 .timer {
   text-align: center;
-  width: 10%;
-  height: 5vh;
+  padding: 0.25em 1em;
   background-color: rgba(255, 255, 255, 0.8);
   color: black;
   align-self: flex-start;
   font-size: larger;
+  position: absolute;
+  top: 1em;
+  left: 1em;
 }
 .timealert {
   text-align: center;
-  width: 10%;
-  height: 5vh;
   background-color: rgba(255, 255, 255, 0.8);
   align-self: flex-start;
   color: #ff0000;

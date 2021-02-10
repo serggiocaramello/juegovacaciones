@@ -2,6 +2,18 @@ const mazo = document.getElementById("mazo");
 const tablero = document.getElementById("tablero");
 const cambiarJugador = document.getElementById("cambiarjugador");
 const tl = gsap.timeline();
+const ordenCartas = [
+  "2R",
+  "4Y",
+  "5B",
+  "3G",
+  "0Y",
+  "8R",
+  "5G",
+  "9B",
+  "3R",
+  "0Y",
+];
 let turno = 1;
 
 class Carta {
@@ -45,6 +57,20 @@ class Carta {
   //       cartaActiva.removeEventListener("mouseleave", (e) => this.zoomOut(e));
   //     });
   //   }
+  seleccionarCarta() {
+    this.cartasActivas.map((carta) => {
+      carta.addEventListener("click", (e) => {
+        e.target.classList.remove("scale");
+        e.target.classList.add("cartajugada");
+        let listadoClasesCarta = Array.from(e.target.classList);
+        let idCarta = e.target.getAttribute("id");
+
+        if (listadoClasesCarta.includes("jugador1")) {
+          gsap.fromTo(`[id='${idCarta}']`, { top: "9rem", x: 0, duration: 1 });
+        }
+      });
+    });
+  }
 }
 
 class Jugador {
@@ -73,8 +99,11 @@ class Jugador {
   robarCarta() {
     this.cantidadCartas++;
     const newCard = document.createElement("div");
+    newCard.setAttribute("id", ordenCartas[0]);
+    newCard.style.backgroundImage = `url("./assets/img/mazo/${ordenCartas[0]}.svg")`;
+    ordenCartas.shift();
     newCard.classList.add(
-      "newcard",
+      "carta",
       "scale",
       `jugador${this.id}`,
       `card-${this.cantidadCartas}`
@@ -132,7 +161,7 @@ class Jugador {
       case 1:
         tl.to(`.jugador1.card-${this.cantidadCartas}`, {
           duration: 1,
-          bottom: "8rem",
+          bottom: "6rem",
           x: 0,
           ease: "back.out(1.2)",
         });
@@ -141,14 +170,14 @@ class Jugador {
         tl.to(`.jugador2.card-${this.cantidadCartas}`, {
           duration: 1,
           y: 0,
-          right: `${11 + carta.anchoCarta / 16}rem`,
+          right: `${2 + carta.anchoCarta / 16}rem`,
           ease: "back.out(1.2)",
         });
         break;
       case 3:
         tl.to(`.jugador3.card-${this.cantidadCartas}`, {
           duration: 1,
-          top: "8rem",
+          top: "6rem",
           x: 0,
           ease: "back.out(1.2)",
         });
@@ -157,11 +186,10 @@ class Jugador {
         tl.to(`.jugador4.card-${this.cantidadCartas}`, {
           duration: 1,
           y: 0,
-          left: `${11 + carta.anchoCarta / 16}rem`,
+          left: `${2 + carta.anchoCarta / 16}rem`,
           ease: "back.out(1.2)",
         });
         break;
-
       default:
         break;
     }
@@ -186,11 +214,38 @@ class Jugador {
       }
     }
   }
-  jugada() {
+
+  // jugarCarta() {
+  //   switch (this.id) {
+  //     case 1:
+  //       let manoJugador1 = Array.from(document.querySelectorAll(".jugador1"));
+  //       manoJugador1[0].addEventListener("click", (e) => {
+  //         console.log(e.target);
+  //       });
+  //       // manoJugador1.addEventListener("click", (e) => {
+  //       //   console.log(e.target);
+  //       // });
+  //       break;
+  //     // case 2:
+  //     //   let manoJugador2 = document.querySelectorAll(".jugador2");
+  //     //   break;
+  //     // case 3:
+  //     //   let manoJugador3 = document.querySelectorAll(".jugador3");
+  //     //   break;
+  //     // case 4:
+  //     //   let manoJugador4 = document.querySelectorAll(".jugador4");
+  //     //   break;
+  //     default:
+  //       break;
+  //   }
+  // }
+
+  turno() {
     this.robarCarta();
     this.animRobarCarta();
     this.reodenarCartas();
     carta.zoomCarta();
+    carta.seleccionarCarta();
   }
 }
 
@@ -214,51 +269,69 @@ cambiarJugador.addEventListener("click", (e) => {
   jugadores.map((jugador) => jugador.voltearCarta());
   //   carta.resetZoom();
   carta.zoomCarta();
+  //reiniciar segundos del contador
+  gameContador.reset();
 });
 
 // Al presionar el mazo
 mazo.addEventListener("click", () => {
   switch (turno) {
     case 1:
-      jugador1.jugada();
+      jugador1.turno();
+
       break;
     case 2:
-      jugador2.jugada();
+      jugador2.turno();
       break;
     case 3:
-      jugador3.jugada();
+      jugador3.turno();
       break;
     case 4:
-      jugador4.jugada();
+      jugador4.turno();
       break;
     default:
       break;
   }
 });
 
-let isWaiting = false;
-let isRunning = false;
-let seconds = 20;
-let countdownTimer;
-let finalCountdown = false;
-
-function GameTimer() {
-  var minutes = Math.round((seconds - 30) / 60);
-  var remainingSeconds = seconds % 60;
-  if (remainingSeconds < 10) {
-    remainingSeconds = "0" + remainingSeconds;
+class Contador {
+  constructor(time) {
+    this.isWaiting = false;
+    this.isRunning = false;
+    this.initialSeconds = time;
+    this.seconds = time;
+    this.countdownTimer;
+    this.finalCountdown = false;
   }
-  document.getElementById("waiting_time").innerHTML =
-    minutes + ":" + remainingSeconds;
+  logic() {
+    let minutes = Math.round((this.seconds - 30) / 60);
+    let remainingSeconds = this.seconds % 60;
+    if (remainingSeconds < 10) {
+      remainingSeconds = "0" + remainingSeconds;
+    }
+    document.getElementById("waiting_time").innerHTML =
+      minutes + ":" + remainingSeconds;
 
-  if (remainingSeconds < 10) {
-    document.getElementById("waiting_time").classList.add("timealert");
+    if (remainingSeconds < 10) {
+      document.getElementById("waiting_time").classList.add("timealert");
+    }
+    if (this.seconds == 0) {
+      this.finalCountdown = true;
+    } else {
+      this.isWaiting = true;
+      this.seconds--;
+    }
   }
-  if (seconds == 0) {
-    finalCountdown = true;
-  } else {
-    isWaiting = true;
-    seconds--;
+  start() {
+    setInterval(this.logic.bind(this), 1000);
+  }
+  reset() {
+    this.seconds = this.initialSeconds;
+    document.getElementById("waiting_time").classList.remove("timealert");
   }
 }
-countdownTimer = setInterval(GameTimer, 1000);
+
+// Nueva instancia de contador
+const gameContador = new Contador(20);
+// Iniciar gameContador
+gameContador.start();

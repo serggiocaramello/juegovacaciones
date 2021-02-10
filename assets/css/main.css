@@ -345,16 +345,17 @@ template {
   font-family: sans-serif;
 }
 
-.mazo, .newcard, .pozo {
+.mazo, .carta, .pozo {
   margin-right: 1em;
   background-image: url("./../img/mazo/UNOPortada.svg");
   background-size: cover;
 }
 
-.newcard {
+.carta {
   width: 71px;
   height: 100px;
   position: absolute;
+  background-image: unset;
   margin: 0;
 }
 
@@ -404,23 +405,23 @@ body {
 }
 
 .infojugador1 {
-  bottom: 3rem;
+  bottom: 2rem;
 }
 
 .infojugador2 {
   -webkit-transform: rotate(90deg);
           transform: rotate(90deg);
-  right: 3rem;
+  right: -3rem;
 }
 
 .infojugador3 {
-  top: 3rem;
+  top: 2rem;
 }
 
 .infojugador4 {
   -webkit-transform: rotate(-90deg);
           transform: rotate(-90deg);
-  left: 3rem;
+  left: -3rem;
 }
 
 .chat {
@@ -431,19 +432,19 @@ body {
 
 .timer {
   text-align: center;
-  width: 10%;
-  height: 5vh;
+  padding: 0.25em 1em;
   background-color: rgba(255, 255, 255, 0.8);
   color: black;
   -ms-flex-item-align: start;
       align-self: flex-start;
   font-size: larger;
+  position: absolute;
+  top: 1em;
+  left: 1em;
 }
 
 .timealert {
   text-align: center;
-  width: 10%;
-  height: 5vh;
   background-color: rgba(255, 255, 255, 0.8);
   -ms-flex-item-align: start;
       align-self: flex-start;
