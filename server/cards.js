@@ -1,5 +1,7 @@
 import _ from "lodash";
 
+
+
 let deckI = [
     "0R", "1R", "2R", "3R", "4R", "5R", "6R", "7R", "8R", "9R",
     "0B", "1B", "2B", "3B", "4B", "5B", "6B", "7B", "8B", "9B",
@@ -21,11 +23,20 @@ deckR = _.difference(deckR, deck3);
 let deck4 = _.sampleSize(deckR, 7);
 deckR = _.difference(deckR, deck4);
 
-
 let cardsTaken = 3;
 
 let cardsSended = _.sampleSize(deckR, cardsTaken);
 deckR = _.difference(deckR, cardsSended);
+
+const erradicate = () => {
+    let cardsTaken2 = 5;
+    let cardsSended3 = _.sampleSize(deckR, cardsTaken2);
+    deckR = _.difference(deckR, cardsSended3);
+    console.log(deckR)
+    return cardsSended3
+
+};
+
 
 
 
@@ -41,4 +52,5 @@ if (cartaPozo.toUpperCase == cartaJugada) {
 console.log(letcartaPozoR.toUpperCase(cartaPozo))
  */
 
+export { erradicate, deck1, deck2, deck3, deck4 }
 
