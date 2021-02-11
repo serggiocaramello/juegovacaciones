@@ -342,18 +342,16 @@ template {
   font-family: sans-serif;
 }
 
-
-.mazo, .carta, .pozo {
+.mazo, .pozo, .newcard {
   margin-right: 1em;
   background-image: url("./../img/mazo/UNOPortada.svg");
   background-size: cover;
 }
 
-.carta {
+.newcard {
   width: 71px;
   height: 100px;
   position: absolute;
-  background-image: unset;
   margin: 0;
 }
 
@@ -388,51 +386,27 @@ body {
 }
 
 .infojugador1 {
-  bottom: 2rem;
+  bottom: 3rem;
 }
 
 .infojugador2 {
-  -webkit-transform: rotate(90deg);
-          transform: rotate(90deg);
-  right: -3rem;
+  transform: rotate(90deg);
+  right: 3rem;
 }
 
 .infojugador3 {
-  top: 2rem;
+  top: 3rem;
 }
 
 .infojugador4 {
-  -webkit-transform: rotate(-90deg);
-          transform: rotate(-90deg);
-  left: -3rem;
+  transform: rotate(-90deg);
+  left: 3rem;
 }
 
 .chat {
   width: 20%;
   height: 96vh;
   background-color: rgba(255, 255, 255, 0.5);
-}
-
-.timer {
-  text-align: center;
-  padding: 0.25em 1em;
-  background-color: rgba(255, 255, 255, 0.8);
-  color: black;
-  -ms-flex-item-align: start;
-      align-self: flex-start;
-  font-size: larger;
-  position: absolute;
-  top: 1em;
-  left: 1em;
-}
-
-.timealert {
-  text-align: center;
-  background-color: rgba(255, 255, 255, 0.8);
-  -ms-flex-item-align: start;
-      align-self: flex-start;
-  color: #ff0000;
-  font-size: larger;
 }
 
 .pozo {
@@ -451,20 +425,9 @@ body {
 }
 
 .flechas {
-  width: 40%;
-  height: 30%;
   position: absolute;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.arrows {
-  display: flex;
-  justify-content: space-between;
 }
 
 .flecha1, .flecha2, .flecha3, .flecha4 {
-  width: 10%;
-  height: auto;
+  width: 5rem;
 }/*# sourceMappingURL=main.css.map */

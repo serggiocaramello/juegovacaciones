@@ -1,0 +1,18 @@
+.flechas {
+    width: 40%;
+    height: 30%;
+    position:absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    
+}
+.arrows {
+    display: flex;
+    justify-content: space-between;
+
+}
+.flecha1, .flecha2, .flecha3, .flecha4 {
+    width: 10%;
+    height: auto;
+} 
