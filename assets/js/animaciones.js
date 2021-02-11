@@ -274,6 +274,7 @@ mazo.addEventListener("click", () => {
   }
 });
 
+
 class Contador {
   constructor(time) {
     this.isWaiting = false;
