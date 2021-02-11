@@ -4,11 +4,12 @@
   background-size: cover;
 }
 
-.newcard {
+.carta {
   width: 71px;
   height: 100px;
   position: absolute;
   @extend .mazo;
+  background-image: unset;
   margin: 0;
 }
 
@@ -22,6 +23,6 @@
 //   background-color: yellow;
 // }
 
-.facedown {
-  // background-color: #000;
-}
+// .facedown {
+//   background-color: #000;
+// }

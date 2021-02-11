@@ -1,7 +1,29 @@
 const mazo = document.getElementById("mazo");
 const tablero = document.getElementById("tablero");
+const pozo = document.getElementById("pozo");
 const cambiarJugador = document.getElementById("cambiarjugador");
 const tl = gsap.timeline();
+const ordenCartas = [
+  "2R",
+  "4Y",
+  "5B",
+  "3G",
+  "0Y",
+  "8R",
+  "5G",
+  "9B",
+  "3R",
+  "1Y",
+  "3Y",
+  "1B",
+  "0R",
+  "0B",
+  "0G",
+];
+//Indicamos quien esta jugando en este equipo.
+// En este caso el jugdor 1 es quien juega en este equipo.
+const jugadorEsteEquipo = 1;
+// Indicamos que jugador esta jugando en este turno.
 let turno = 1;
 
 class Carta {
@@ -19,32 +41,17 @@ class Carta {
     gsap.to(e.target, { scale: 1 });
   }
   zoomCarta() {
-    this.cartasActivas = Array.from(document.querySelectorAll(".scale"));
-    this.cartasActivas = this.cartasActivas.filter((x) =>
-      x.classList.contains("scale")
+    this.cartasActivas = Array.from(
+      document.querySelectorAll(`.jugador${jugadorEsteEquipo}`)
     );
-
     this.cartasActivas.map((cartaActiva) => {
-      if (cartaActiva.classList.contains("scale")) {
-        cartaActiva.addEventListener("mouseenter", (e) => this.zoomIn(e));
-      }
+      cartaActiva.addEventListener("mouseenter", (e) => this.zoomIn(e));
     });
 
     this.cartasActivas.map((cartaActiva) => {
-      if (cartaActiva.classList.contains("scale")) {
-        cartaActiva.addEventListener("mouseleave", (e) => this.zoomOut(e));
-      }
+      cartaActiva.addEventListener("mouseleave", (e) => this.zoomOut(e));
     });
   }
-  //   resetZoom() {
-  //     this.cartasActivas = Array.from(document.querySelectorAll(".scale"));
-  //     this.cartasActivas.map((cartaActiva) => {
-  //       cartaActiva.removeEventListener("mouseenter", (e) => this.zoomIn(e));
-  //     });
-  //     this.cartasActivas.map((cartaActiva) => {
-  //       cartaActiva.removeEventListener("mouseleave", (e) => this.zoomOut(e));
-  //     });
-  //   }
 }
 
 class Jugador {
@@ -71,50 +78,65 @@ class Jugador {
   }
 
   robarCarta() {
-    this.cantidadCartas++;
+    this.cantidadCartas = this.cantidadCartas + 1;
     const newCard = document.createElement("div");
+    newCard.setAttribute("id", ordenCartas[0]);
+    // Si el jugador de este equipo roba cartas estas se muestran.
+    if (this.id == jugadorEsteEquipo) {
+      newCard.style.backgroundImage = `url("./assets/img/mazo/${ordenCartas[0]}.svg")`;
+    }
+    // En caso contrario no se muestran las cartas.
+    else {
+      newCard.style.backgroundImage = `url("./assets/img/mazo/UNOPortada.svg")`;
+    }
     newCard.classList.add(
-      "newcard",
-      "scale",
-      `jugador${this.id}`,
-      `card-${this.cantidadCartas}`
+      "carta",
+      `jugador${this.id}`
+      // `card-${this.cantidadCartas}`
     );
     tablero.appendChild(newCard);
-    this.manoDeCartas = document.querySelectorAll(`.jugador${this.id}`);
+    this.animRobarCarta();
+    ordenCartas.shift();
   }
 
-  reodenarCartas = () => {
+  reordenarCartas = () => {
+    this.manoDeCartas = Array.from(
+      document.querySelectorAll(`.jugador${this.id}`)
+    );
+    // Variable que determina la distancia entre cartas
     let xCartas = -(
       ((this.cantidadCartas - 1) *
         (carta.separacionCartas + carta.anchoCarta)) /
       2
     );
-    for (let j = 1; j <= this.cantidadCartas; j++) {
+    console.log(xCartas);
+    this.manoDeCartas.map((cartaRobada) => {
       switch (this.id) {
         case 1:
-          tl.to(`.jugador1.card-${j}`, {
+          tl.to(`[id='${cartaRobada.id}']`, {
             duration: 0.3,
             x: -xCartas,
           });
           xCartas += +carta.anchoCarta + carta.separacionCartas;
           break;
         case 2:
-          tl.to(`.jugador2.card-${j}`, {
+          tl.to(`[id='${cartaRobada.id}']`, {
             duration: 0.3,
             y: -xCartas,
-            rotate: 90,
+            rotate: -90,
           });
           xCartas += +carta.anchoCarta + carta.separacionCartas;
           break;
         case 3:
-          tl.to(`.jugador3.card-${j}`, {
+          tl.to(`[id='${cartaRobada.id}']`, {
             duration: 0.3,
             x: -xCartas,
+            rotate: 180,
           });
           xCartas += +carta.anchoCarta + carta.separacionCartas;
           break;
         case 4:
-          tl.to(`.jugador4.card-${j}`, {
+          tl.to(`[id='${cartaRobada.id}']`, {
             duration: 0.3,
             y: -xCartas,
             rotate: 90,
@@ -124,77 +146,92 @@ class Jugador {
         default:
           break;
       }
-    }
+    });
   };
 
   animRobarCarta = () => {
     switch (this.id) {
       case 1:
-        tl.to(`.jugador1.card-${this.cantidadCartas}`, {
+        tl.to(`[id='${ordenCartas[0]}']`, {
           duration: 1,
-          bottom: "8rem",
+          bottom: "6rem",
           x: 0,
           ease: "back.out(1.2)",
         });
         break;
       case 2:
-        tl.to(`.jugador2.card-${this.cantidadCartas}`, {
+        tl.to(`[id='${ordenCartas[0]}']`, {
           duration: 1,
           y: 0,
-          right: `${11 + carta.anchoCarta / 16}rem`,
+          right: `${2 + carta.anchoCarta / 16}rem`,
           ease: "back.out(1.2)",
         });
         break;
       case 3:
-        tl.to(`.jugador3.card-${this.cantidadCartas}`, {
+        tl.to(`[id='${ordenCartas[0]}']`, {
           duration: 1,
-          top: "8rem",
+          top: "6rem",
           x: 0,
           ease: "back.out(1.2)",
         });
         break;
       case 4:
-        tl.to(`.jugador4.card-${this.cantidadCartas}`, {
+        tl.to(`[id='${ordenCartas[0]}']`, {
           duration: 1,
           y: 0,
-          left: `${11 + carta.anchoCarta / 16}rem`,
+          left: `${2 + carta.anchoCarta / 16}rem`,
           ease: "back.out(1.2)",
         });
         break;
-
       default:
         break;
     }
   };
 
-  voltearCarta() {
-    if (this.manoDeCartas) {
-      if (this.id !== turno) {
-        this.manoDeCartas.forEach((carta) => {
-          carta.classList.add("facedown");
-          carta.style.backgroundImage =
-            'url("./assets/img/mazo/UNOPortada.svg")';
-          carta.style.backgroundSize = "cover";
-          carta.style.backgroundColor = "unset";
-          carta.classList.remove("scale");
-        });
-      } else {
-        this.manoDeCartas.forEach((carta) => {
-          carta.classList.remove("facedown");
-          carta.classList.add("scale");
-        });
-      }
-    }
+  // voltearCarta() {
+  //   if (this.manoDeCartas) {
+  //     if (this.id !== jugadorEsteEquipo) {
+  //       this.manoDeCartas.forEach((carta) => {
+  //         carta.classList.add("facedown");
+  //         carta.style.backgroundImage =
+  //           'url("./assets/img/mazo/UNOPortada.svg")';
+  //         carta.style.backgroundSize = "cover";
+  //         carta.style.backgroundColor = "unset";
+  //       });
+  //     } else {
+  //       this.manoDeCartas.forEach((carta) => {
+  //         carta.classList.remove("facedown");
+  //       });
+  //     }
+  //   }
+  // }
+
+  seleccionarCarta() {
+    carta.cartasActivas.map((cartaActiva) => {
+      cartaActiva.addEventListener("click", (e) => {
+        let listadoClasesCarta = Array.from(e.target.classList);
+        if (listadoClasesCarta.includes(`jugador${jugadorEsteEquipo}`)) {
+          this.cantidadCartas--;
+          e.target.classList.remove("scale");
+          e.target.classList.remove(`jugador${this.id}`);
+          e.target.classList.add("cartajugada");
+          let idCarta = e.target.getAttribute("id");
+          gsap.to(`[id='${idCarta}']`, { top: "9rem", x: 0, duration: 1 });
+        }
+      });
+    });
   }
-  jugada() {
+
+  turno() {
     this.robarCarta();
-    this.animRobarCarta();
-    this.reodenarCartas();
+    this.reordenarCartas();
     carta.zoomCarta();
+    this.seleccionarCarta();
   }
 }
 
 const carta = new Carta();
+// Dimensiones cartas
 mazo.style.width = `${carta.anchoCarta}px`;
 mazo.style.height = `${carta.altoCarta}px`;
 
@@ -211,25 +248,26 @@ jugadores.map((jugador) => jugador.imprimirNombreTablero());
 cambiarJugador.addEventListener("click", (e) => {
   e.preventDefault();
   turno == 4 ? (turno = 1) : turno++;
-  jugadores.map((jugador) => jugador.voltearCarta());
-  //   carta.resetZoom();
-  carta.zoomCarta();
+  // jugadores.map((jugador) => jugador.voltearCarta());
+  //reiniciar segundos del contador
+  gameContador.reset();
 });
 
 // Al presionar el mazo
 mazo.addEventListener("click", () => {
   switch (turno) {
     case 1:
-      jugador1.jugada();
+      jugador1.turno();
+
       break;
     case 2:
-      jugador2.jugada();
+      jugador2.turno();
       break;
     case 3:
-      jugador3.jugada();
+      jugador3.turno();
       break;
     case 4:
-      jugador4.jugada();
+      jugador4.turno();
       break;
     default:
       break;
@@ -237,3 +275,44 @@ mazo.addEventListener("click", () => {
 });
 
 
+class Contador {
+  constructor(time) {
+    this.isWaiting = false;
+    this.isRunning = false;
+    this.initialSeconds = time;
+    this.seconds = time;
+    this.countdownTimer;
+    this.finalCountdown = false;
+  }
+  logic() {
+    let minutes = Math.round((this.seconds - 30) / 60);
+    let remainingSeconds = this.seconds % 60;
+    if (remainingSeconds < 10) {
+      remainingSeconds = "0" + remainingSeconds;
+    }
+    document.getElementById("waiting_time").innerHTML =
+      minutes + ":" + remainingSeconds;
+
+    if (remainingSeconds < 10) {
+      document.getElementById("waiting_time").classList.add("timealert");
+    }
+    if (this.seconds == 0) {
+      this.finalCountdown = true;
+    } else {
+      this.isWaiting = true;
+      this.seconds--;
+    }
+  }
+  start() {
+    setInterval(this.logic.bind(this), 1000);
+  }
+  reset() {
+    this.seconds = this.initialSeconds;
+    document.getElementById("waiting_time").classList.remove("timealert");
+  }
+}
+
+// Nueva instancia de contador
+const gameContador = new Contador(20);
+// Iniciar gameContador
+gameContador.start();
