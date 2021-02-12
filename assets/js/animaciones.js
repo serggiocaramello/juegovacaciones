@@ -1,8 +1,9 @@
 const mazo = document.getElementById("mazo");
 const tablero = document.getElementById("tablero");
-const pozo = document.getElementById("pozo");
+// const pozo = document.getElementById("pozo").getBoundingClientRect();
 const cambiarJugador = document.getElementById("cambiarjugador");
 const tl = gsap.timeline();
+let cantidadCartasPozo = 0;
 const ordenCartas = [
   "2R",
   "4Y",
@@ -25,6 +26,19 @@ const ordenCartas = [
 const jugadorEsteEquipo = 1;
 // Indicamos que jugador esta jugando en este turno.
 let turno = 1;
+
+// Al redimensionar la ventana, las cartas del pozo quedan desplazadas del pozo, esta funcion las vuelve a alinear con el pozo cada vez que se redimensiona la ventana.
+// Prueba comentando desde la funcion y la linea que aparece justo despues de esta.
+function alinearCartasPozo() {
+  let pozo = document.getElementById("pozo").getBoundingClientRect();
+  gsap.to(".cartajugada", {
+    top: pozo.top,
+    x: 0,
+    left: pozo.left,
+    duration: 0,
+  });
+}
+window.onresize = alinearCartasPozo;
 
 class Carta {
   constructor() {
@@ -109,7 +123,6 @@ class Jugador {
         (carta.separacionCartas + carta.anchoCarta)) /
       2
     );
-    console.log(xCartas);
     this.manoDeCartas.map((cartaRobada) => {
       switch (this.id) {
         case 1:
@@ -212,11 +225,22 @@ class Jugador {
         let listadoClasesCarta = Array.from(e.target.classList);
         if (listadoClasesCarta.includes(`jugador${jugadorEsteEquipo}`)) {
           this.cantidadCartas--;
+          cantidadCartasPozo++;
           e.target.classList.remove("scale");
           e.target.classList.remove(`jugador${this.id}`);
           e.target.classList.add("cartajugada");
           let idCarta = e.target.getAttribute("id");
-          gsap.to(`[id='${idCarta}']`, { top: "9rem", x: 0, duration: 1 });
+          let pozo = document.getElementById("pozo").getBoundingClientRect();
+
+          gsap.to(`[id='${idCarta}']`, {
+            top: pozo.top,
+            x: 0,
+            left: pozo.left,
+            duration: 1,
+            zIndex: cantidadCartasPozo,
+          });
+          // Para que las cartas de la mano se reordenen
+          this.reordenarCartas();
         }
       });
     });
