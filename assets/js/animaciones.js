@@ -4,7 +4,7 @@ const pozo = document.getElementById("pozo");
 const cambiarJugador = document.getElementById("cambiarjugador");
 const tl = gsap.timeline();
 const ordenCartas = [
-  "2R",
+  "VR",
   "4Y",
   "5B",
   "3G",
@@ -187,6 +187,24 @@ class Jugador {
         break;
     }
   };
+  animVolteaJuego = () => {
+    gsap.to(".flecha1", {
+      scaleX: -1,
+      rotate:-90,
+      duration: 1});
+    gsap.to(".flecha2", {
+        scaleX: -1,
+        rotate:90,
+        duration: 1});
+    gsap.to(".flecha3", {
+          scaleX: -1,
+          rotate:-90,
+          duration: 1});
+    gsap.to(".flecha4", {
+            scaleX: -1,
+            rotate:90,
+            duration: 1});
+  }
 
   // voltearCarta() {
   //   if (this.manoDeCartas) {
@@ -215,8 +233,11 @@ class Jugador {
           e.target.classList.remove("scale");
           e.target.classList.remove(`jugador${this.id}`);
           e.target.classList.add("cartajugada");
-          let idCarta = e.target.getAttribute("id");
-          gsap.to(`[id='${idCarta}']`, { top: "9rem", x: 0, duration: 1 });
+          var idCarta = e.target.getAttribute("id");
+          gsap.to(`[id='${idCarta}']`, { top: "9rem", x: 0, duration: 1 });          
+        }
+        if (idCarta = "VR" || "VB" || "VG" || "VY"){
+          this.animVolteaJuego()
         }
       });
     });

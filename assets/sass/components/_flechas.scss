@@ -1,11 +1,11 @@
 .flechas {
     width: 40%;
     height: 30%;
-    position:absolute;
+    position: absolute;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    
+    z-index: 1;
 }
 .arrows {
     display: flex;

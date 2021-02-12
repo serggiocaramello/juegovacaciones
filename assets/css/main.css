@@ -342,11 +342,11 @@ template {
   font-family: sans-serif;
 }
 
-
-.mazo, .carta, .pozo {
+.mazo, .pozo, .carta {
   margin-right: 1em;
   background-image: url("./../img/mazo/UNOPortada.svg");
   background-size: cover;
+  z-index: 2;
 }
 
 .carta {
@@ -355,6 +355,7 @@ template {
   position: absolute;
   background-image: unset;
   margin: 0;
+  z-index: 2;
 }
 
 body {
@@ -392,8 +393,7 @@ body {
 }
 
 .infojugador2 {
-  -webkit-transform: rotate(90deg);
-          transform: rotate(90deg);
+  transform: rotate(90deg);
   right: -3rem;
 }
 
@@ -402,8 +402,7 @@ body {
 }
 
 .infojugador4 {
-  -webkit-transform: rotate(-90deg);
-          transform: rotate(-90deg);
+  transform: rotate(-90deg);
   left: -3rem;
 }
 
@@ -418,8 +417,7 @@ body {
   padding: 0.25em 1em;
   background-color: rgba(255, 255, 255, 0.8);
   color: black;
-  -ms-flex-item-align: start;
-      align-self: flex-start;
+  align-self: flex-start;
   font-size: larger;
   position: absolute;
   top: 1em;
@@ -429,8 +427,7 @@ body {
 .timealert {
   text-align: center;
   background-color: rgba(255, 255, 255, 0.8);
-  -ms-flex-item-align: start;
-      align-self: flex-start;
+  align-self: flex-start;
   color: #ff0000;
   font-size: larger;
 }
@@ -439,6 +436,7 @@ body {
   margin-right: 0;
   width: 71px;
   height: 100px;
+  z-index: 2;
 }
 
 .cambiarjugador {
@@ -448,6 +446,7 @@ body {
   border: 1px solid #000;
   margin-right: 1em;
   text-decoration: none;
+  z-index: 2;
 }
 
 .flechas {
@@ -457,6 +456,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  z-index: 1;
 }
 
 .arrows {
