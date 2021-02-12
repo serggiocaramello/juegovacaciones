@@ -432,6 +432,17 @@ body {
   font-size: larger;
 }
 
+.botoncastigo {
+  background-image: url(/juegovacaciones/assets/img/botonUNO.svg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 8vh;
+  width: 8vh;
+  position: relative;
+  top: 40vh;
+  /*   box-shadow: 5px 3px 3px grey; */
+}
+
 .pozo {
   margin-right: 0;
   width: 71px;

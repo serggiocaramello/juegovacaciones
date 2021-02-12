@@ -5,7 +5,7 @@ const cambiarJugador = document.getElementById("cambiarjugador");
 const tl = gsap.timeline();
 const ordenCartas = [
   "VR",
-  "4Y",
+  "SKY",
   "5B",
   "3G",
   "0Y",
@@ -78,6 +78,7 @@ class Jugador {
   }
 
   robarCarta() {
+    let soundFlip = new sound("./assets/sonidos/dealingcard.wav")
     this.cantidadCartas = this.cantidadCartas + 1;
     const newCard = document.createElement("div");
     newCard.setAttribute("id", ordenCartas[0]);
@@ -96,6 +97,7 @@ class Jugador {
     );
     tablero.appendChild(newCard);
     this.animRobarCarta();
+    soundFlip.play();
     ordenCartas.shift();
   }
 
@@ -109,7 +111,7 @@ class Jugador {
         (carta.separacionCartas + carta.anchoCarta)) /
       2
     );
-    console.log(xCartas);
+    
     this.manoDeCartas.map((cartaRobada) => {
       switch (this.id) {
         case 1:
@@ -188,6 +190,7 @@ class Jugador {
     }
   };
   animVolteaJuego = () => {
+    let soundVolteaTablero = new sound("./assets/sonidos/voltearjuego.wav")
     gsap.to(".flecha1", {
       scaleX: -1,
       rotate:-90,
@@ -204,7 +207,15 @@ class Jugador {
             scaleX: -1,
             rotate:90,
             duration: 1});
+    soundVolteaTablero.play();
   }
+
+  saltaTurno = () => {
+    let soundSaltaTurno = new sound("./assets/sonidos/pierdeturno.mp3")
+    soundSaltaTurno.play();
+  }
+
+  
 
   // voltearCarta() {
   //   if (this.manoDeCartas) {
@@ -225,6 +236,7 @@ class Jugador {
   // }
 
   seleccionarCarta() {
+    let counter = 0;
     carta.cartasActivas.map((cartaActiva) => {
       cartaActiva.addEventListener("click", (e) => {
         let listadoClasesCarta = Array.from(e.target.classList);
@@ -236,8 +248,13 @@ class Jugador {
           var idCarta = e.target.getAttribute("id");
           gsap.to(`[id='${idCarta}']`, { top: "9rem", x: 0, duration: 1 });          
         }
-        if (idCarta = "VR" || "VB" || "VG" || "VY"){
-          this.animVolteaJuego()
+        if (idCarta == "VR" || idCarta == "VB" || idCarta ==  "VG" || idCarta == "VY"){
+          console.log('1 if', idCarta); 
+          this.animVolteaJuego(); 
+        }
+        console.log('entre if', idCarta, counter);
+        if (idCarta == "SKR" || idCarta == "SKB" || idCarta == "SKG" || idCarta == "SKY"){
+          this.saltaTurno();
         }
       });
     });
@@ -250,6 +267,24 @@ class Jugador {
     this.seleccionarCarta();
   }
 }
+
+function sound(src) {
+  this.sound = document.createElement("audio");
+  this.sound.src = src;
+  this.sound.setAttribute("preload", "auto");
+  this.sound.setAttribute("controls", "none");
+  this.sound.style.display = "none";
+  document.body.appendChild(this.sound);
+  this.play = function(){
+    this.sound.play();
+  }
+  this.stop = function(){
+    this.sound.pause();
+  }
+}
+
+
+
 
 const carta = new Carta();
 // Dimensiones cartas
