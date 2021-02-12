@@ -6,7 +6,7 @@ const tl = gsap.timeline();
 let cantidadCartasPozo = 0;
 const ordenCartas = [
   "VR",
-  "4Y",
+  "SKY",
   "5B",
   "3G",
   "0Y",
@@ -92,6 +92,7 @@ class Jugador {
   }
 
   robarCarta() {
+    let soundFlip = new sound("./assets/sonidos/dealingcard.wav");
     this.cantidadCartas = this.cantidadCartas + 1;
     const newCard = document.createElement("div");
     newCard.setAttribute("id", ordenCartas[0]);
@@ -110,6 +111,7 @@ class Jugador {
     );
     tablero.appendChild(newCard);
     this.animRobarCarta();
+    soundFlip.play();
     ordenCartas.shift();
   }
 
@@ -123,6 +125,7 @@ class Jugador {
         (carta.separacionCartas + carta.anchoCarta)) /
       2
     );
+
     this.manoDeCartas.map((cartaRobada) => {
       switch (this.id) {
         case 1:
@@ -201,7 +204,8 @@ class Jugador {
     }
   };
 
-  animVolteaJuego() {
+  animVolteaJuego = () => {
+    let soundVolteaTablero = new sound("./assets/sonidos/voltearjuego.wav");
     gsap.to(".flecha1", {
       scaleX: -1,
       rotate: -90,
@@ -222,7 +226,13 @@ class Jugador {
       rotate: 90,
       duration: 1,
     });
-  }
+    soundVolteaTablero.play();
+  };
+
+  saltaTurno = () => {
+    let soundSaltaTurno = new sound("./assets/sonidos/pierdeturno.mp3");
+    soundSaltaTurno.play();
+  };
 
   // voltearCarta() {
   //   if (this.manoDeCartas) {
@@ -243,6 +253,7 @@ class Jugador {
   // }
 
   seleccionarCarta() {
+    let counter = 0;
     carta.cartasActivas.map((cartaActiva) => {
       cartaActiva.addEventListener("click", (e) => {
         let listadoClasesCarta = Array.from(e.target.classList);
@@ -272,6 +283,15 @@ class Jugador {
             this.animVolteaJuego();
           }
 
+          if (
+            idCarta == "SKR" ||
+            idCarta == "SKB" ||
+            idCarta == "SKG" ||
+            idCarta == "SKY"
+          ) {
+            this.saltaTurno();
+          }
+
           // Para que las cartas de la mano se reordenen
           this.reordenarCartas();
         }
@@ -285,6 +305,21 @@ class Jugador {
     carta.zoomCarta();
     this.seleccionarCarta();
   }
+}
+
+function sound(src) {
+  this.sound = document.createElement("audio");
+  this.sound.src = src;
+  this.sound.setAttribute("preload", "auto");
+  this.sound.setAttribute("controls", "none");
+  this.sound.style.display = "none";
+  document.body.appendChild(this.sound);
+  this.play = function () {
+    this.sound.play();
+  };
+  this.stop = function () {
+    this.sound.pause();
+  };
 }
 
 const carta = new Carta();
