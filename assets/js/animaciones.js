@@ -5,7 +5,7 @@ const cambiarJugador = document.getElementById("cambiarjugador");
 const tl = gsap.timeline();
 let cantidadCartasPozo = 0;
 const ordenCartas = [
-  "2R",
+  "VR",
   "4Y",
   "5B",
   "3G",
@@ -201,6 +201,29 @@ class Jugador {
     }
   };
 
+  animVolteaJuego() {
+    gsap.to(".flecha1", {
+      scaleX: -1,
+      rotate: -90,
+      duration: 1,
+    });
+    gsap.to(".flecha2", {
+      scaleX: -1,
+      rotate: 90,
+      duration: 1,
+    });
+    gsap.to(".flecha3", {
+      scaleX: -1,
+      rotate: -90,
+      duration: 1,
+    });
+    gsap.to(".flecha4", {
+      scaleX: -1,
+      rotate: 90,
+      duration: 1,
+    });
+  }
+
   // voltearCarta() {
   //   if (this.manoDeCartas) {
   //     if (this.id !== jugadorEsteEquipo) {
@@ -232,13 +255,23 @@ class Jugador {
           let idCarta = e.target.getAttribute("id");
           let pozo = document.getElementById("pozo").getBoundingClientRect();
 
-          gsap.to(`[id='${idCarta}']`, {
+          tl.to(`[id='${idCarta}']`, {
             top: pozo.top,
             x: 0,
             left: pozo.left,
             duration: 1,
             zIndex: cantidadCartasPozo,
           });
+
+          if (
+            idCarta === "VR" ||
+            idCarta === "VB" ||
+            idCarta === "VG" ||
+            idCarta === "VY"
+          ) {
+            this.animVolteaJuego();
+          }
+
           // Para que las cartas de la mano se reordenen
           this.reordenarCartas();
         }
