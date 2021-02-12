@@ -1,13 +1,17 @@
 const mazo = document.getElementById("mazo");
 const tablero = document.getElementById("tablero");
-// const pozo = document.getElementById("pozo").getBoundingClientRect();
 const cambiarJugador = document.getElementById("cambiarjugador");
 const tl = gsap.timeline();
 let cantidadCartasPozo = 0;
+// Mazo de prueba, funciona con mayusculas y minusculas.
 const ordenCartas = [
+  "1r",
   "VR",
+  "+4r",
   "SKY",
+  "2b",
   "5B",
+  "4y",
   "3G",
   "0Y",
   "8R",
@@ -88,6 +92,12 @@ class Jugador {
     nombre.classList.add(`nombrejugador${this.id}`);
     infoJugador.appendChild(avatar);
     infoJugador.appendChild(nombre);
+    if (this.id == jugadorEsteEquipo) {
+      const boton = document.createElement("div");
+      boton.setAttribute("id", "botoncastigo");
+      boton.classList.add("botoncastigo");
+      infoJugador.appendChild(boton);
+    }
     tablero.append(infoJugador);
   }
 
@@ -96,19 +106,16 @@ class Jugador {
     this.cantidadCartas = this.cantidadCartas + 1;
     const newCard = document.createElement("div");
     newCard.setAttribute("id", ordenCartas[0]);
-    // Si el jugador de este equipo roba cartas estas se muestran.
+    // nombreImagenCarta recibe el nombre de la carta y hace que siempre la ultima letra sea mayuscula, esto es util porque podemos usar la misma imagen para la carta 1r y 1R.
+    const nombreImagenCarta = ordenCartas[0].toUpperCase();
     if (this.id == jugadorEsteEquipo) {
       newCard.style.backgroundImage = `url("./assets/img/mazo/${ordenCartas[0]}.svg")`;
-    }
-    // En caso contrario no se muestran las cartas.
-    else {
+      newCard.classList.add("facedown");
+    } else {
       newCard.style.backgroundImage = `url("./assets/img/mazo/UNOPortada.svg")`;
     }
-    newCard.classList.add(
-      "carta",
-      `jugador${this.id}`
-      // `card-${this.cantidadCartas}`
-    );
+    newCard.classList.add("carta", `jugador${this.id}`);
+
     tablero.appendChild(newCard);
     this.animRobarCarta();
     soundFlip.play();
@@ -166,38 +173,67 @@ class Jugador {
   };
 
   animRobarCarta = () => {
+    let posicionMazo = document.getElementById("mazo").getBoundingClientRect();
     switch (this.id) {
       case 1:
-        tl.to(`[id='${ordenCartas[0]}']`, {
-          duration: 1,
-          bottom: "6rem",
-          x: 0,
-          ease: "back.out(1.2)",
-        });
+        tl.fromTo(
+          `[id='${ordenCartas[0]}']`,
+          {
+            bottom: posicionMazo.bottom,
+            x: 0,
+            left: posicionMazo.left,
+          },
+          {
+            duration: 0.8,
+            bottom: "6rem",
+            x: 0,
+            ease: "back.out(1.2)",
+          }
+        );
         break;
       case 2:
-        tl.to(`[id='${ordenCartas[0]}']`, {
-          duration: 1,
-          y: 0,
-          right: `${2 + carta.anchoCarta / 16}rem`,
-          ease: "back.out(1.2)",
-        });
+        tl.fromTo(
+          `[id='${ordenCartas[0]}']`,
+          {
+            right: posicionMazo.right,
+          },
+          {
+            duration: 1,
+            y: 0,
+            right: `${2 + carta.anchoCarta / 16}rem`,
+            ease: "back.out(1.2)",
+          }
+        );
         break;
       case 3:
-        tl.to(`[id='${ordenCartas[0]}']`, {
-          duration: 1,
-          top: "6rem",
-          x: 0,
-          ease: "back.out(1.2)",
-        });
+        tl.fromTo(
+          `[id='${ordenCartas[0]}']`,
+          {
+            bottom: posicionMazo.bottom,
+            x: 0,
+            left: posicionMazo.left,
+          },
+          {
+            duration: 1,
+            top: "6rem",
+            x: 0,
+            ease: "back.out(1.2)",
+          }
+        );
         break;
       case 4:
-        tl.to(`[id='${ordenCartas[0]}']`, {
-          duration: 1,
-          y: 0,
-          left: `${2 + carta.anchoCarta / 16}rem`,
-          ease: "back.out(1.2)",
-        });
+        tl.fromTo(
+          `[id='${ordenCartas[0]}']`,
+          {
+            left: posicionMazo.left,
+          },
+          {
+            duration: 1,
+            y: 0,
+            left: `${2 + carta.anchoCarta / 16}rem`,
+            ease: "back.out(1.2)",
+          }
+        );
         break;
       default:
         break;

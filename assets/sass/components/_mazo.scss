@@ -15,16 +15,7 @@
   z-index: 0;
 }
 
-// .card-1 {
-//   background-color: steelblue;
-// }
-// .card-2 {
-//   background-color: purple;
-// }
-// .card-3 {
-//   background-color: yellow;
-// }
-
-// .facedown {
-//   background-color: #000;
-// }
+.facedown {
+  background-image: url("./../img/mazo/UNOPortada.svg");
+  background-size: cover;
+}

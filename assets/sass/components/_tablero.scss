@@ -31,14 +31,14 @@ body {
   bottom: 2rem;
 }
 .infojugador2 {
-  transform: rotate(90deg);
+  transform: rotate(-90deg);
   right: -3rem;
 }
 .infojugador3 {
   top: 2rem;
 }
 .infojugador4 {
-  transform: rotate(-90deg);
+  transform: rotate(90deg);
   left: -3rem;
 }
 
@@ -72,7 +72,4 @@ body {
   background-repeat: no-repeat;
   height: 8vh;
   width: 8vh;
-  position: relative;
-  top: 40vh;
-  /*   box-shadow: 5px 3px 3px grey; */
 }
