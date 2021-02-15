@@ -12,11 +12,22 @@
   "author": "ephie & icaeth",
   "license": "ISC",
   "dependencies": {
+    "@mapbox/node-pre-gyp": "^1.0.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "lodash": "^4.17.20"
+    "express-ws": "^4.0.0",
+    "lodash": "^4.17.20",
+    "peer": "^0.6.1",
+    "simple-peer": "^9.9.3",
+    "socket.io": "^3.1.1",
+    "websocket": "^1.0.33",
+    "wrtc": "^0.4.7",
+    "ws": "^7.4.3"
   },
   "devDependencies": {
-    "nodemon": "^2.0.7"
+    "@types/express": "^4.17.11",
+    "@types/ws": "^7.4.0",
+    "nodemon": "^2.0.7",
+    "typescript": "^4.1.5"
   }
 }
