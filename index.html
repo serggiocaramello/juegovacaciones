@@ -1,22 +1,36 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Prueba animaciones</title>
-    <link rel="stylesheet" href="./assets/css/main.css" />
-  </head>
-  <body>
-    <div id="tablero" class="tablero">
-      <a href="#" id="cambiarjugador" class="cambiarjugador"
-        >Cambio de jugador</a
-      >
-      <div id="mazo" class="mazo"></div>
-      <div class="pozo"></div>
-      <div class="manojugador"></div>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login: No nos demandes Mattel</title>
+  <link rel="stylesheet" href="./assets/sass/main.css" />
+</head>
+
+<body>
+
+  <div class="login-menu">
+    <h1> Bienvenidos a No Nos Demandes Mattel.</h1>
+    <h3>Elige un slot de jugador, asigna un nombre y avatar y comienza a jugar</h3>
+    <div class="slot"><input type="text" name="jugador" placeholder="Ingresa tu Usuario" id="slot1"> Elige tu avatar:
+      <img class="av" src="./assets/img/av1.jpg" alt=""> <a class="login-button" href="juego/jugador1.html">Ingresar</a>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.0/gsap.min.js"></script>
-    <script src="./assets/js/animaciones.js"></script>
-    <script src="./assets/js/script.js"></script>
-  </body>
+    <div class="slot"><input type="text" name="jugador" placeholder="Ingresa tu Usuario" id="slot2"> Elige tu avatar:
+      <img class="av" src="./assets/img/av2.jpg" alt=""> <a class="login-button" href="juego/jugador2.html">Ingresar</a>
+    </div>
+    <div class="slot"><input type="text" name="jugador" placeholder="Ingresa tu Usuario" id="slot3"> Elige tu avatar:
+      <img class="av" src="./assets/img/av3.jpg" alt=""> <a class="login-button" href="juego/jugador3.html">Ingresar</a>
+    </div>
+    <div class="slot"><input type="text" name="jugador" placeholder="Ingresa tu Usuario" id="slot4"> Elige tu avatar:
+      <img class="av" src="./assets/img/av4.jpg" alt=""> <a class="login-button" href="juego/jugador4.html">Ingresar</a>
+    </div>
+  </div>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.0/gsap.min.js"></script>
+  <script src="./assets/js/animaciones.js"></script>
+  <script src="./assets/js/script.js"></script>
+</body>
+
 </html>
