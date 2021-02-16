@@ -4,7 +4,7 @@ const cambiarJugador = document.getElementById("cambiarjugador");
 const tl = gsap.timeline();
 let cantidadCartasPozo = 0;
 // Mazo de prueba, funciona con mayusculas y minusculas.
-const ordenCartas = [
+const mazoCartas = [
   "1r",
   "VR",
   "+4r",
@@ -25,6 +25,7 @@ const ordenCartas = [
   "0B",
   "0G",
 ];
+
 //Indicamos quien esta jugando en este equipo.
 // En este caso el jugdor 1 es quien juega en este equipo.
 const jugadorEsteEquipo = 1;
@@ -50,6 +51,11 @@ class Carta {
     this.altoCarta = 100;
     this.separacionCartas = 10;
     this.cartasActivas;
+    this.soundFlip = new Sound("./assets/sonidos/dealingcard.wav");
+    this.soundVolteaTablero = new Sound("./assets/sonidos/voltearjuego.wav");
+    this.soundSaltaTurno = new Sound("./assets/sonidos/pierdeturno.mp3");
+    this.cartasCambioSentido = ["VR", "VB", "VG", "VY"];
+    this.cartasSaltaTurno = ["SKR", "SKB", "SKG", "SKY"];
   }
 
   zoomIn(e) {
@@ -73,10 +79,10 @@ class Carta {
 }
 
 class Jugador {
-  constructor(id, nombre, avatar) {
-    this.cantidadCartas = 0;
-    this.id = id;
+  constructor(idJugador, nombre, avatar) {
+    this.cantidadCartasMano = 0;
     this.manoDeCartas;
+    this.idJugador = idJugador;
     this.nombre = nombre;
     this.avatar = avatar;
   }
@@ -87,12 +93,13 @@ class Jugador {
     const nombre = document.createElement("div");
     avatar.src = this.avatar;
     nombre.textContent = this.nombre;
-    infoJugador.classList.add(`infojugador${this.id}`);
-    avatar.classList.add(`avatarjugador${this.id}`);
-    nombre.classList.add(`nombrejugador${this.id}`);
+    infoJugador.classList.add(`infojugador${this.idJugador}`);
+    avatar.classList.add(`avatarjugador${this.idJugador}`);
+    nombre.classList.add(`nombrejugador${this.idJugador}`);
     infoJugador.appendChild(avatar);
     infoJugador.appendChild(nombre);
-    if (this.id == jugadorEsteEquipo) {
+    // Si el jugador es el que esta en este pc, se imprime además el boton UNO
+    if (this.idJugador == jugadorEsteEquipo) {
       const boton = document.createElement("div");
       boton.setAttribute("id", "botoncastigo");
       boton.classList.add("botoncastigo");
@@ -102,82 +109,42 @@ class Jugador {
   }
 
   robarCarta() {
-    let soundFlip = new sound("./assets/sonidos/dealingcard.wav");
-    this.cantidadCartas = this.cantidadCartas + 1;
+    this.cantidadCartasMano++;
     const newCard = document.createElement("div");
-    newCard.setAttribute("id", ordenCartas[0]);
-    // nombreImagenCarta recibe el nombre de la carta y hace que siempre la ultima letra sea mayuscula, esto es util porque podemos usar la misma imagen para la carta 1r y 1R.
-    const nombreImagenCarta = ordenCartas[0].toUpperCase();
-    if (this.id == jugadorEsteEquipo) {
-      newCard.style.backgroundImage = `url("./assets/img/mazo/${ordenCartas[0]}.svg")`;
-      newCard.classList.add("facedown");
+    newCard.classList.add("carta", `jugador${this.idJugador}`);
+    // Si es el jugador de este pc se muestra su carta, en caso contrario se muestra boca abajo.
+    if (this.idJugador == jugadorEsteEquipo) {
+      // Se imprime en la carta el id de la primera carta del mazo.
+      newCard.setAttribute("id", mazoCartas[0]);
+      newCard.style.backgroundImage = `url("./assets/img/mazo/${mazoCartas[0].toUpperCase()}.svg")`;
     } else {
       newCard.style.backgroundImage = `url("./assets/img/mazo/UNOPortada.svg")`;
     }
-    newCard.classList.add("carta", `jugador${this.id}`);
-
+    // Imprime la carta.
     tablero.appendChild(newCard);
+    // Inicia la animación de robar carta.
     this.animRobarCarta();
-    soundFlip.play();
-    ordenCartas.shift();
+    // Inicia el sonido al robar carta.
+    carta.soundFlip.play();
+    // Inicia la animación al hacer zoom a la carta.
+    carta.zoomCarta();
+    // Elimina la carta del array mazoCartas.
+    mazoCartas.shift();
+    // Se reordenan las cartas.
+    this.animReordenarCartas();
   }
 
-  reordenarCartas = () => {
-    this.manoDeCartas = Array.from(
-      document.querySelectorAll(`.jugador${this.id}`)
-    );
-    // Variable que determina la distancia entre cartas
-    let xCartas = -(
-      ((this.cantidadCartas - 1) *
-        (carta.separacionCartas + carta.anchoCarta)) /
-      2
-    );
-
-    this.manoDeCartas.map((cartaRobada) => {
-      switch (this.id) {
-        case 1:
-          tl.to(`[id='${cartaRobada.id}']`, {
-            duration: 0.3,
-            x: -xCartas,
-          });
-          xCartas += +carta.anchoCarta + carta.separacionCartas;
-          break;
-        case 2:
-          tl.to(`[id='${cartaRobada.id}']`, {
-            duration: 0.3,
-            y: -xCartas,
-            rotate: -90,
-          });
-          xCartas += +carta.anchoCarta + carta.separacionCartas;
-          break;
-        case 3:
-          tl.to(`[id='${cartaRobada.id}']`, {
-            duration: 0.3,
-            x: -xCartas,
-            rotate: 180,
-          });
-          xCartas += +carta.anchoCarta + carta.separacionCartas;
-          break;
-        case 4:
-          tl.to(`[id='${cartaRobada.id}']`, {
-            duration: 0.3,
-            y: -xCartas,
-            rotate: 90,
-          });
-          xCartas += +carta.anchoCarta + carta.separacionCartas;
-          break;
-        default:
-          break;
-      }
-    });
-  };
-
-  animRobarCarta = () => {
+  animRobarCarta() {
+    // posicionMazo nos sirve para que green sock sepa que las cartas deben salir desde las coordenadas del mazo.
     let posicionMazo = document.getElementById("mazo").getBoundingClientRect();
-    switch (this.id) {
+    this.manoDeCartas = Array.from(
+      document.querySelectorAll(`.jugador${this.idJugador}`)
+    );
+    const cartaRobada = this.manoDeCartas[this.manoDeCartas.length - 1];
+    switch (this.idJugador) {
       case 1:
         tl.fromTo(
-          `[id='${ordenCartas[0]}']`,
+          cartaRobada,
           {
             bottom: posicionMazo.bottom,
             x: 0,
@@ -193,7 +160,7 @@ class Jugador {
         break;
       case 2:
         tl.fromTo(
-          `[id='${ordenCartas[0]}']`,
+          cartaRobada,
           {
             right: posicionMazo.right,
           },
@@ -207,7 +174,7 @@ class Jugador {
         break;
       case 3:
         tl.fromTo(
-          `[id='${ordenCartas[0]}']`,
+          cartaRobada,
           {
             bottom: posicionMazo.bottom,
             x: 0,
@@ -223,7 +190,7 @@ class Jugador {
         break;
       case 4:
         tl.fromTo(
-          `[id='${ordenCartas[0]}']`,
+          cartaRobada,
           {
             left: posicionMazo.left,
           },
@@ -238,10 +205,100 @@ class Jugador {
       default:
         break;
     }
-  };
+  }
 
-  animVolteaJuego = () => {
-    let soundVolteaTablero = new sound("./assets/sonidos/voltearjuego.wav");
+  animReordenarCartas() {
+    // Variable que determina la posicion de cada carta.
+    let posCarta = -(
+      ((this.cantidadCartasMano - 1) *
+        (carta.separacionCartas + carta.anchoCarta)) /
+      2
+    );
+
+    // La funcion ordena cada una de las cartas de la mano.
+    this.manoDeCartas.map((cartaEnMano) => {
+      const clasesCartaMano = Array.from(cartaEnMano.classList);
+
+      if (clasesCartaMano.includes(`jugador${this.idJugador}`)) {
+        switch (this.idJugador) {
+          case 1:
+            tl.to(cartaEnMano, {
+              duration: 0.15,
+              x: -posCarta,
+            });
+            posCarta += +carta.anchoCarta + carta.separacionCartas;
+            break;
+          case 2:
+            tl.to(cartaEnMano, {
+              duration: 0.15,
+              y: -posCarta,
+              rotate: -90,
+            });
+            posCarta += +carta.anchoCarta + carta.separacionCartas;
+            break;
+          case 3:
+            tl.to(cartaEnMano, {
+              duration: 0.15,
+              x: -posCarta,
+              rotate: 180,
+            });
+            posCarta += +carta.anchoCarta + carta.separacionCartas;
+            break;
+          case 4:
+            tl.to(cartaEnMano, {
+              duration: 0.15,
+              y: -posCarta,
+              rotate: 90,
+            });
+            posCarta += +carta.anchoCarta + carta.separacionCartas;
+            break;
+          default:
+            break;
+        }
+      }
+    });
+  }
+
+  animSeleccionarCarta(e) {
+    let idCarta = e.target.getAttribute("id");
+    let pozo = document.getElementById("pozo").getBoundingClientRect();
+    tl.to(`[id='${idCarta}']`, {
+      top: pozo.top,
+      x: 0,
+      left: pozo.left,
+      duration: 1,
+      zIndex: cantidadCartasPozo,
+    });
+    if (carta.cartasCambioSentido.includes(idCarta)) {
+      // Si la carta es un cambio de sentido, cambia el sentido del juego
+      this.animVolteaJuego();
+    } else if (carta.cartasSaltaTurno.includes(idCarta)) {
+      // Si la carta es un salto de turno, el siguiente jugador pierde su turno
+      this.saltaTurno();
+    }
+    // Para que las cartas de la mano se reordenen
+    this.animReordenarCartas();
+  }
+
+  seleccionarCarta() {
+    // carta.cartasActivas son las cartas que tiene en la mano el jugador.
+    carta.cartasActivas.map((cartaActiva) => {
+      cartaActiva.addEventListener("click", (e) => {
+        let listadoClasesCarta = Array.from(e.target.classList);
+        if (listadoClasesCarta.includes(`jugador${jugadorEsteEquipo}`)) {
+          this.cantidadCartasMano--;
+          cantidadCartasPozo++;
+          e.target.classList.remove(`jugador${this.idJugador}`);
+          e.target.classList.add("cartajugada");
+
+          // Animacion cuando carta seleccionada va al pozo
+          this.animSeleccionarCarta(e);
+        }
+      });
+    });
+  }
+
+  animVolteaJuego() {
     gsap.to(".flecha1", {
       scaleX: -1,
       rotate: -90,
@@ -262,100 +319,35 @@ class Jugador {
       rotate: 90,
       duration: 1,
     });
-    soundVolteaTablero.play();
-  };
+    carta.soundVolteaTablero.play();
+  }
 
-  saltaTurno = () => {
-    let soundSaltaTurno = new sound("./assets/sonidos/pierdeturno.mp3");
-    soundSaltaTurno.play();
-  };
-
-  // voltearCarta() {
-  //   if (this.manoDeCartas) {
-  //     if (this.id !== jugadorEsteEquipo) {
-  //       this.manoDeCartas.forEach((carta) => {
-  //         carta.classList.add("facedown");
-  //         carta.style.backgroundImage =
-  //           'url("./assets/img/mazo/UNOPortada.svg")';
-  //         carta.style.backgroundSize = "cover";
-  //         carta.style.backgroundColor = "unset";
-  //       });
-  //     } else {
-  //       this.manoDeCartas.forEach((carta) => {
-  //         carta.classList.remove("facedown");
-  //       });
-  //     }
-  //   }
-  // }
-
-  seleccionarCarta() {
-    let counter = 0;
-    carta.cartasActivas.map((cartaActiva) => {
-      cartaActiva.addEventListener("click", (e) => {
-        let listadoClasesCarta = Array.from(e.target.classList);
-        if (listadoClasesCarta.includes(`jugador${jugadorEsteEquipo}`)) {
-          this.cantidadCartas--;
-          cantidadCartasPozo++;
-          e.target.classList.remove("scale");
-          e.target.classList.remove(`jugador${this.id}`);
-          e.target.classList.add("cartajugada");
-          let idCarta = e.target.getAttribute("id");
-          let pozo = document.getElementById("pozo").getBoundingClientRect();
-
-          tl.to(`[id='${idCarta}']`, {
-            top: pozo.top,
-            x: 0,
-            left: pozo.left,
-            duration: 1,
-            zIndex: cantidadCartasPozo,
-          });
-
-          if (
-            idCarta === "VR" ||
-            idCarta === "VB" ||
-            idCarta === "VG" ||
-            idCarta === "VY"
-          ) {
-            this.animVolteaJuego();
-          }
-
-          if (
-            idCarta == "SKR" ||
-            idCarta == "SKB" ||
-            idCarta == "SKG" ||
-            idCarta == "SKY"
-          ) {
-            this.saltaTurno();
-          }
-
-          // Para que las cartas de la mano se reordenen
-          this.reordenarCartas();
-        }
-      });
-    });
+  saltaTurno() {
+    carta.soundSaltaTurno.play();
   }
 
   turno() {
     this.robarCarta();
-    this.reordenarCartas();
-    carta.zoomCarta();
     this.seleccionarCarta();
   }
 }
 
-function sound(src) {
-  this.sound = document.createElement("audio");
-  this.sound.src = src;
-  this.sound.setAttribute("preload", "auto");
-  this.sound.setAttribute("controls", "none");
-  this.sound.style.display = "none";
-  document.body.appendChild(this.sound);
-  this.play = function () {
+// Clase para crear los sonidos, se instancia dentro de las propiedades de la clase Carta.
+class Sound {
+  constructor(src) {
+    this.sound = document.createElement("audio");
+    this.sound.src = src;
+    this.sound.setAttribute("preload", "auto");
+    this.sound.setAttribute("controls", "none");
+    this.sound.style.display = "none";
+  }
+  play() {
+    document.body.appendChild(this.sound);
     this.sound.play();
-  };
-  this.stop = function () {
+  }
+  stop() {
     this.sound.pause();
-  };
+  }
 }
 
 const carta = new Carta();
@@ -364,10 +356,10 @@ mazo.style.width = `${carta.anchoCarta}px`;
 mazo.style.height = `${carta.altoCarta}px`;
 
 // Creación de jugadores
-const jugador1 = new Jugador(1, "Leonardo", "https://picsum.photos/100");
-const jugador2 = new Jugador(2, "Raphael", "https://picsum.photos/100");
-const jugador3 = new Jugador(3, "Miguel Ángel", "https://picsum.photos/100");
-const jugador4 = new Jugador(4, "Donatello", "https://picsum.photos/100");
+const jugador4 = new Jugador(4, "Leonardo", "https://picsum.photos/100");
+const jugador1 = new Jugador(1, "Raphael", "https://picsum.photos/100");
+const jugador2 = new Jugador(2, "Miguel Ángel", "https://picsum.photos/100");
+const jugador3 = new Jugador(3, "Donatello", "https://picsum.photos/100");
 const jugadores = [jugador1, jugador2, jugador3, jugador4];
 
 jugadores.map((jugador) => jugador.imprimirNombreTablero());
@@ -376,7 +368,6 @@ jugadores.map((jugador) => jugador.imprimirNombreTablero());
 cambiarJugador.addEventListener("click", (e) => {
   e.preventDefault();
   turno == 4 ? (turno = 1) : turno++;
-  // jugadores.map((jugador) => jugador.voltearCarta());
   //reiniciar segundos del contador
   gameContador.reset();
 });
@@ -386,7 +377,6 @@ mazo.addEventListener("click", () => {
   switch (turno) {
     case 1:
       jugador1.turno();
-
       break;
     case 2:
       jugador2.turno();

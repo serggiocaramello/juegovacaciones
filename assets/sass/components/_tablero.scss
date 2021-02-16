@@ -72,4 +72,11 @@ body {
   background-repeat: no-repeat;
   height: 8vh;
   width: 8vh;
+  margin-left: 1em;
+  cursor: pointer;
+  box-shadow: 0 0 8px 8px rgb(43, 42, 42);
+}
+.botoncastigo:active,
+.botoncastigo:focus {
+  box-shadow: 0 0 4px 4px rgb(43, 42, 42);
 }
