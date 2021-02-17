@@ -2,38 +2,42 @@ body {
     background-image: url(/assets/img/UNObg.jpg);
     background-size: cover;
     background-repeat: no-repeat;
+    background-position: center center;
+    height: 100vh;
     margin:0;
     padding:0;
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: 600;
     color: white;
 }
-
 .opacidad {
     position: absolute;
     z-index: -1;
     height: 98vh;
-    width: 98vw;
+    width: 99vw;
     border-radius: 2rem;
     background-color: rgb(0, 0, 0);
     opacity: 90%;
-    margin: 1vh 1vw 1vh 1vw;
+    margin: 1vh 0.5vw 1vh 0.5vw;
 
 }
-
 header {
     text-align: center;
     color: rgb(221, 221, 221);
-    height: 30%;
+    height: 20%;
     padding-top: 2vw;
+}
+.titulo {
+    font-size: 25pt;
+    margin: 0;
+}
+.subtitulo {
+    font-size: 15pt;
 }
 
 main {
     display: flex;
     flex-direction: row;
     align-items: center;
-    height: 70%;
-    margin-top: 4vw;
+    height: 50%;
     
 }
 
@@ -56,14 +60,11 @@ main {
     margin-bottom: 3vh;
     opacity: 100;
 }
-
 .avatares {
     width: 45%;
     display: flex;
     flex-wrap: wrap;
     margin: 2vw;
-    
-
 }
 .av {
     width: 40px;
@@ -83,31 +84,27 @@ main {
     cursor: pointer;
     box-shadow: 0px 0px 3px 5px rgb(20, 20, 20);
 }
-
 .login-button:active{
     box-shadow: 0px 0px 2px 2px rgb(20, 20, 20);
 }
-
 .info-jugadores {
     width: 30%;
 }
-
 .avatarjugador {
     height: 3.5vw;
     align-self: center;
 }
-
 .nombre-jugador {
     align-self: center;
+    font-weight: 300;
 }
-
 .datos-jugador {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    font-weight: 500;
     
 }
-
 .estado-jugador-pendiente {
     width: 7vw;
     background-color: yellow;
@@ -121,8 +118,8 @@ main {
     background-color: #016d06;
     border: solid 1px black;
     padding: 0.5vw;
-    color: black;
     text-align: center;
+    font-weight: 300;
 }
 .inicia-partida{
     display: flex;

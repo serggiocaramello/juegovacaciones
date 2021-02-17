@@ -5,6 +5,7 @@
  * 1. Correct the line height in all browsers.
  * 2. Prevent adjustments of font size after orientation changes in iOS.
  */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&display=swap");
 html {
   line-height: 1.15;
   /* 1 */
@@ -341,8 +342,9 @@ template {
   display: none;
 }
 
-* {
-  font-family: sans-serif;
+body {
+  font-family: "Poppins", sans-serif;
+  font-weight: 300;
 }
 
 .mazo, .newcard, .pozo {
@@ -447,10 +449,10 @@ body {
   background-image: url(/assets/img/UNObg.jpg);
   background-size: cover;
   background-repeat: no-repeat;
+  background-position: center center;
+  height: 100vh;
   margin: 0;
   padding: 0;
-  font-family: Arial, Helvetica, sans-serif;
-  font-weight: 600;
   color: white;
 }
 
@@ -458,18 +460,27 @@ body {
   position: absolute;
   z-index: -1;
   height: 98vh;
-  width: 98vw;
+  width: 99vw;
   border-radius: 2rem;
   background-color: black;
   opacity: 90%;
-  margin: 1vh 1vw 1vh 1vw;
+  margin: 1vh 0.5vw 1vh 0.5vw;
 }
 
 header {
   text-align: center;
   color: #dddddd;
-  height: 30%;
+  height: 20%;
   padding-top: 2vw;
+}
+
+.titulo {
+  font-size: 25pt;
+  margin: 0;
+}
+
+.subtitulo {
+  font-size: 15pt;
 }
 
 main {
@@ -483,8 +494,7 @@ main {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  height: 70%;
-  margin-top: 4vw;
+  height: 50%;
 }
 
 .login-menu {
@@ -572,6 +582,7 @@ main {
   -ms-flex-item-align: center;
       -ms-grid-row-align: center;
       align-self: center;
+  font-weight: 300;
 }
 
 .datos-jugador {
@@ -585,6 +596,7 @@ main {
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
+  font-weight: 500;
 }
 
 .estado-jugador-pendiente {
@@ -601,8 +613,8 @@ main {
   background-color: #016d06;
   border: solid 1px black;
   padding: 0.5vw;
-  color: black;
   text-align: center;
+  font-weight: 300;
 }
 
 .inicia-partida {
