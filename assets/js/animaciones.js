@@ -124,17 +124,17 @@ class Jugador {
     this.avatar = avatar;
   }
 
-  crearElemento(nombre, el, id, clase, src, padre) {
+  crearElemento({ nombre, el, id, clase, src, padre }) {
     // if (nombre && el) {
     //   const nombre = document.createElemen(el);
     //   if (id) {
-
     //   }
     // }
-    console.log(arguments);
+    console.log(nombre);
   }
 
   imprimirNombreTablero() {
+    this.crearElemento({ nombre: "minombre", padre: "div" });
     const infoJugador = document.createElement("div");
     const avatar = document.createElement("img");
     const nombre = document.createElement("div");
