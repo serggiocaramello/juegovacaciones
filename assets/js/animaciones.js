@@ -47,6 +47,10 @@ window.onresize = alinearCartasPozo;
 
 class Carta {
   constructor() {
+    this.cartaPozo = "3g";
+    this.currentNumero = document.getElementById("currentNumero");
+    this.currentColor = document.getElementById("currentColor");
+    this.colorPicker = document.getElementById("colorPicker");
     this.anchoCarta = 71;
     this.altoCarta = 100;
     this.separacionCartas = 10;
@@ -56,6 +60,14 @@ class Carta {
     this.soundSaltaTurno = new Sound("./assets/sonidos/pierdeturno.mp3");
     this.cartasCambioSentido = ["VR", "VB", "VG", "VY"];
     this.cartasSaltaTurno = ["SKR", "SKB", "SKG", "SKY"];
+    this.cartasWild = ["WDB", "WDG", "WDR", "WDY"];
+    this.cartasActivasMas4 = ["+4B", "+4R", "+4Y", "+4G"];
+    this.colors = {
+      R: "red",
+      B: "blue",
+      G: "green",
+      Y: "yellow",
+    };
   }
 
   zoomIn(e) {
@@ -76,6 +88,31 @@ class Carta {
       cartaActiva.addEventListener("mouseleave", (e) => this.zoomOut(e));
     });
   }
+  setColor(colorSelected) {
+    // color de la carta del pozo.
+    const cardColor = this.cartaPozo[this.cartaPozo.length - 1].toUpperCase();
+    if (colorSelected) {
+      this.currentColor.style.backgroundColor = this.colors[colorSelected];
+    } else if (
+      // Si la carta del pozo es un wild o un + 4, currentColor no se le asigna un valor a currentColor.
+      this.cartasWild.includes(this.cartaPozo.toUpperCase()) ||
+      this.cartasActivasMas4.includes(this.cartaPozo.toUpperCase())
+    ) {
+      this.currentColor.style.backgroundColor = "unset";
+    } else {
+      this.currentColor.style.backgroundColor = this.colors[cardColor];
+    }
+  }
+  setNumero() {
+    this.currentNumero.textContent = this.cartaPozo
+      .split("")
+      .slice(0, this.cartaPozo.length - 1)
+      .join("");
+  }
+  setCartaPozoInfo() {
+    this.setNumero();
+    this.setColor();
+  }
 }
 
 class Jugador {
@@ -87,6 +124,16 @@ class Jugador {
     this.avatar = avatar;
   }
 
+  crearElemento(nombre, el, id, clase, src, padre) {
+    // if (nombre && el) {
+    //   const nombre = document.createElemen(el);
+    //   if (id) {
+
+    //   }
+    // }
+    console.log(arguments);
+  }
+
   imprimirNombreTablero() {
     const infoJugador = document.createElement("div");
     const avatar = document.createElement("img");
@@ -96,8 +143,11 @@ class Jugador {
     infoJugador.classList.add(`infojugador${this.idJugador}`);
     avatar.classList.add(`avatarjugador${this.idJugador}`);
     nombre.classList.add(`nombrejugador${this.idJugador}`);
+
+    tablero.append(infoJugador);
     infoJugador.appendChild(avatar);
     infoJugador.appendChild(nombre);
+
     // Si el jugador es el que esta en este pc, se imprime además el boton UNO
     if (this.idJugador == jugadorEsteEquipo) {
       const boton = document.createElement("div");
@@ -105,7 +155,6 @@ class Jugador {
       boton.classList.add("botoncastigo");
       infoJugador.appendChild(boton);
     }
-    tablero.append(infoJugador);
   }
 
   robarCarta() {
@@ -259,6 +308,27 @@ class Jugador {
     });
   }
 
+  seleccionarColor() {
+    // Aparece el color picker.
+    gsap.to(carta.colorPicker, {
+      display: "flex",
+      opacity: 1,
+      duration: 1,
+    });
+    // Al seleccionar un color del color picker.
+    carta.colorPicker.addEventListener("click", (e) => {
+      const colorSelected = e.target.classList[0];
+      // Fijamos la variable carta.currentColor con el color seleccionado.
+      carta.setColor(colorSelected);
+      // Desaparece el color picker.
+      gsap.to(carta.colorPicker, {
+        display: "none",
+        opacity: 0,
+        duration: 1,
+      });
+    });
+  }
+
   animSeleccionarCarta(e) {
     let idCarta = e.target.getAttribute("id");
     let pozo = document.getElementById("pozo").getBoundingClientRect();
@@ -275,6 +345,12 @@ class Jugador {
     } else if (carta.cartasSaltaTurno.includes(idCarta)) {
       // Si la carta es un salto de turno, el siguiente jugador pierde su turno
       this.saltaTurno();
+    } else if (carta.cartasWild.includes(idCarta.toUpperCase())) {
+      // Si la carta es un wild, se llama al color picker.
+      this.seleccionarColor();
+    } else if (carta.cartasActivasMas4.includes(idCarta.toUpperCase())) {
+      // Si la carta es un +4, se llama al color picker.
+      this.seleccionarColor();
     }
     // Para que las cartas de la mano se reordenen
     this.animReordenarCartas();
@@ -288,11 +364,15 @@ class Jugador {
         if (listadoClasesCarta.includes(`jugador${jugadorEsteEquipo}`)) {
           this.cantidadCartasMano--;
           cantidadCartasPozo++;
+          carta.cartaPozo = e.target.getAttribute("id");
           e.target.classList.remove(`jugador${this.idJugador}`);
           e.target.classList.add("cartajugada");
 
           // Animacion cuando carta seleccionada va al pozo
           this.animSeleccionarCarta(e);
+
+          // Se define el numero y color de la carta del pozo
+          carta.setCartaPozoInfo();
         }
       });
     });
@@ -355,19 +435,32 @@ const carta = new Carta();
 mazo.style.width = `${carta.anchoCarta}px`;
 mazo.style.height = `${carta.altoCarta}px`;
 
+// Se inicializan los valores del numero actual y color actual de la carta del pozo
+carta.setColor();
+carta.setNumero();
+
 // Creación de jugadores
-const jugador4 = new Jugador(4, "Leonardo", "https://picsum.photos/100");
-const jugador1 = new Jugador(1, "Raphael", "https://picsum.photos/100");
-const jugador2 = new Jugador(2, "Miguel Ángel", "https://picsum.photos/100");
-const jugador3 = new Jugador(3, "Donatello", "https://picsum.photos/100");
-const jugadores = [jugador1, jugador2, jugador3, jugador4];
+const jugador1 = new Jugador(
+  1,
+  "Leonardo",
+  "assets/img/avatares/01-mexican.svg"
+);
+const jugador2 = new Jugador(2, "Raphael", "assets/img/avatares/02-man.svg");
+const jugador3 = new Jugador(
+  3,
+  "Miguel Ángel",
+  "assets/img/avatares/03-pirates.svg"
+);
+// const jugador4 = new Jugador(4, "Donatello", "assets/img/avatares/04-girl.svg");
+// const jugadores = [jugador1, jugador2, jugador3, jugador4];
+const jugadores = [jugador1, jugador2, jugador3];
 
 jugadores.map((jugador) => jugador.imprimirNombreTablero());
 
 // Al cambiar de turno
 cambiarJugador.addEventListener("click", (e) => {
   e.preventDefault();
-  turno == 4 ? (turno = 1) : turno++;
+  turno == 3 ? (turno = 1) : turno++;
   //reiniciar segundos del contador
   gameContador.reset();
 });
@@ -384,9 +477,9 @@ mazo.addEventListener("click", () => {
     case 3:
       jugador3.turno();
       break;
-    case 4:
-      jugador4.turno();
-      break;
+    // case 4:
+    //   jugador4.turno();
+    //   break;
     default:
       break;
   }
@@ -433,3 +526,6 @@ class Contador {
 const gameContador = new Contador(20);
 // Iniciar gameContador
 gameContador.start();
+
+// To do
+// Implementar para 2 jugadores y 3 jugadores

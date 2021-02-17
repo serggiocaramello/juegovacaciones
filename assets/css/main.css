@@ -5,6 +5,7 @@
  * 1. Correct the line height in all browsers.
  * 2. Prevent adjustments of font size after orientation changes in iOS.
  */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&display=swap");
 html {
   line-height: 1.15;
   /* 1 */
@@ -341,8 +342,9 @@ template {
   display: none;
 }
 
-* {
-  font-family: sans-serif;
+body {
+  font-family: "Poppins", sans-serif;
+  font-weight: 300;
 }
 
 .mazo, .carta, .pozo {
@@ -402,13 +404,13 @@ body {
           align-items: center;
   position: absolute;
   color: #fff;
-  font-size: 2em;
+  font-size: 1.5em;
+  font-weight: 500;
 }
 
 [class*="infojugador"] img {
-  border-radius: 50%;
-  margin-right: 0.5em;
-  width: 60px;
+  margin-right: 1em;
+  width: 50px;
 }
 
 .infojugador1 {
@@ -421,6 +423,11 @@ body {
   right: -3rem;
 }
 
+.infojugador2 img {
+  -webkit-transform: rotate(90deg);
+          transform: rotate(90deg);
+}
+
 .infojugador3 {
   top: 2rem;
 }
@@ -431,13 +438,36 @@ body {
   left: -3rem;
 }
 
+.infojugador4 img {
+  -webkit-transform: rotate(-90deg);
+          transform: rotate(-90deg);
+}
+
 .chat {
   width: 20%;
   height: 96vh;
   background-color: rgba(255, 255, 255, 0.5);
 }
 
+.info {
+  width: 6em;
+  position: absolute;
+  top: 1em;
+  left: 1em;
+}
+
 .timer {
+  text-align: center;
+  padding: 0.25em 1.25em;
+  background-color: rgba(255, 255, 255, 0.8);
+  color: black;
+  -ms-flex-item-align: start;
+      align-self: flex-start;
+  font-size: larger;
+  margin-bottom: 0.5em;
+}
+
+.infoPozo {
   text-align: center;
   padding: 0.25em 1em;
   background-color: rgba(255, 255, 255, 0.8);
@@ -445,9 +475,14 @@ body {
   -ms-flex-item-align: start;
       align-self: flex-start;
   font-size: larger;
-  position: absolute;
-  top: 1em;
-  left: 1em;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.infoPozo .currentColor {
+  width: 1em;
+  margin-left: 1em;
 }
 
 .timealert {
@@ -460,21 +495,82 @@ body {
 }
 
 .botoncastigo {
-  background-image: url(../img/botonUNO.svg);
+  background-image: url(../img/botonUNOcircular.svg);
   background-size: cover;
   background-repeat: no-repeat;
-  height: 8vh;
-  width: 8vh;
+  height: 3rem;
+  width: 3rem;
+  border-radius: 50%;
   margin-left: 1em;
   cursor: pointer;
-  -webkit-box-shadow: 0 0 8px 8px #2b2a2a;
-          box-shadow: 0 0 8px 8px #2b2a2a;
+  -webkit-box-shadow: 0 0 6px 6px #2b2a2a;
+          box-shadow: 0 0 6px 6px #2b2a2a;
 }
 
 .botoncastigo:active,
 .botoncastigo:focus {
   -webkit-box-shadow: 0 0 4px 4px #2b2a2a;
           box-shadow: 0 0 4px 4px #2b2a2a;
+}
+
+.colorPicker {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  width: 8em;
+  border-radius: 50%;
+  border: 5px solid #fff;
+  overflow: hidden;
+  position: absolute;
+  top: calc(50%-4em);
+  left: calc(50%-4em);
+  z-index: 99;
+  display: none;
+  opacity: 0;
+}
+
+.colorPicker > * {
+  width: 4em;
+  height: 4em;
+  cursor: pointer;
+}
+
+.colorPicker .R {
+  background-color: red;
+}
+
+.colorPicker .R:hover {
+  background-color: #990000;
+}
+
+.colorPicker .B {
+  background-color: blue;
+}
+
+.colorPicker .B:hover {
+  background-color: #000099;
+}
+
+.colorPicker .Y {
+  background-color: yellow;
+}
+
+.colorPicker .Y:hover {
+  background-color: #999900;
+}
+
+.colorPicker .G {
+  background-color: green;
+}
+
+.colorPicker .G:hover {
+  background-color: #001a00;
 }
 
 .pozo {
