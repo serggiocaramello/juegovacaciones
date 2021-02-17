@@ -31,6 +31,8 @@ const mazoCartas = [
 const jugadorEsteEquipo = 1;
 // Indicamos que jugador esta jugando en este turno.
 let turno = 1;
+// En sentido horario incremento es = 1, en antihorario debe cambiar a -1.
+let incremento = 1;
 
 // Al redimensionar la ventana, las cartas del pozo quedan desplazadas del pozo, esta funcion las vuelve a alinear con el pozo cada vez que se redimensiona la ventana.
 // Prueba comentando desde la funcion y la linea que aparece justo despues de esta.
@@ -124,36 +126,89 @@ class Jugador {
     this.avatar = avatar;
   }
 
-  crearElemento({ nombre, el, id, clase, src, padre }) {
-    // if (nombre && el) {
-    //   const nombre = document.createElemen(el);
-    //   if (id) {
-    //   }
-    // }
-    console.log(nombre);
+  crearElemento({ el, id, clase, src, text, padre }) {
+    if (el && padre) {
+      const elemento = document.createElement(el);
+      if (id) {
+        elemento.setAttribute("id", id);
+      }
+      if (clase) {
+        elemento.classList.add(clase);
+      }
+      if (src) {
+        elemento.src = src;
+      }
+      if (text) {
+        elemento.textContent = text;
+      }
+      padre.appendChild(elemento);
+      return elemento;
+    }
   }
 
   imprimirNombreTablero() {
-    this.crearElemento({ nombre: "minombre", padre: "div" });
-    const infoJugador = document.createElement("div");
-    const avatar = document.createElement("img");
-    const nombre = document.createElement("div");
-    avatar.src = this.avatar;
-    nombre.textContent = this.nombre;
-    infoJugador.classList.add(`infojugador${this.idJugador}`);
-    avatar.classList.add(`avatarjugador${this.idJugador}`);
-    nombre.classList.add(`nombrejugador${this.idJugador}`);
-
-    tablero.append(infoJugador);
-    infoJugador.appendChild(avatar);
-    infoJugador.appendChild(nombre);
+    const infoJugador = this.crearElemento({
+      el: "div",
+      clase: `infojugador${this.idJugador}`,
+      padre: tablero,
+    });
+    const avatar = this.crearElemento({
+      el: "img",
+      src: this.avatar,
+      clase: `avatarjugador${this.idJugador}`,
+      padre: infoJugador,
+    });
+    const nombre = this.crearElemento({
+      el: "div",
+      text: this.nombre,
+      clase: `nombrejugador${this.idJugador}`,
+      padre: infoJugador,
+    });
 
     // Si el jugador es el que esta en este pc, se imprime además el boton UNO
     if (this.idJugador == jugadorEsteEquipo) {
-      const boton = document.createElement("div");
-      boton.setAttribute("id", "botoncastigo");
-      boton.classList.add("botoncastigo");
-      infoJugador.appendChild(boton);
+      const boton = this.crearElemento({
+        el: "div",
+        id: "botoncastigo",
+        clase: "botoncastigo",
+        padre: infoJugador,
+      });
+
+      const emoticonMenu = this.crearElemento({
+        el: "nav",
+        clase: "circular-menu",
+        padre: infoJugador,
+      });
+
+      const circle = this.crearElemento({
+        el: "div",
+        class: "circle",
+        padre: emoticonMenu,
+      });
+
+      const emoticones = [
+        "enamorado.svg",
+        "frio.svg",
+        "guino.svg",
+        "indignacion.svg",
+        "riendo.svg",
+        "sorprendido.svg",
+      ];
+
+      emoticones.map((emoticon) => {
+        this.crearElemento({
+          el: "img",
+          src: `assets/img/emoticons/${emoticon}`,
+          padre: circle,
+        });
+      });
+
+      const botonEmoticon = this.crearElemento({
+        el: "img",
+        src: "/assets/img/emoticons/ejemplo.svg",
+        clase: "menu-button",
+        padre: emoticonMenu,
+      });
     }
   }
 
@@ -460,7 +515,7 @@ jugadores.map((jugador) => jugador.imprimirNombreTablero());
 // Al cambiar de turno
 cambiarJugador.addEventListener("click", (e) => {
   e.preventDefault();
-  turno == 3 ? (turno = 1) : turno++;
+  turno == 3 ? (turno = 1) : (turno = +incremento);
   //reiniciar segundos del contador
   gameContador.reset();
 });
