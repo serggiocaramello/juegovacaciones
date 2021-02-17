@@ -127,6 +127,10 @@ main {
     background-color: rgb(88, 88, 88);
     padding: 1vw;
     text-align: center;
-    box-shadow: 7px 7px 2px rgba(0, 0, 0, 0.2);
+    box-shadow: 5px 5px 2px rgba(128, 126, 126, 0.2);
     cursor: pointer;
+}
+.start-button:active,
+.start-button:focus {
+    box-shadow: 3px 3px 2px rgba(70, 70, 70, 0.2);
 }

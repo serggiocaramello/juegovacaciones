@@ -614,8 +614,14 @@ main {
   background-color: #585858;
   padding: 1vw;
   text-align: center;
-  -webkit-box-shadow: 7px 7px 2px rgba(0, 0, 0, 0.2);
-          box-shadow: 7px 7px 2px rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: 5px 5px 2px rgba(128, 126, 126, 0.2);
+          box-shadow: 5px 5px 2px rgba(128, 126, 126, 0.2);
   cursor: pointer;
+}
+
+.start-button:active,
+.start-button:focus {
+  -webkit-box-shadow: 3px 3px 2px rgba(70, 70, 70, 0.2);
+          box-shadow: 3px 3px 2px rgba(70, 70, 70, 0.2);
 }
 /*# sourceMappingURL=main.css.map */
