@@ -1,27 +1,132 @@
-.av {
-    width: 50px;
-    height: 50px;
+body {
+    background-image: url(/assets/img/UNObg.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    margin:0;
+    padding:0;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 600;
+    color: white;
+}
+
+.opacidad {
+    position: absolute;
+    z-index: -1;
+    height: 98vh;
+    width: 98vw;
+    border-radius: 2rem;
+    background-color: rgb(0, 0, 0);
+    opacity: 90%;
+    margin: 1vh 1vw 1vh 1vw;
+
+}
+
+header {
+    text-align: center;
+    color: yellow;
+    height: 30%;
+    padding-top: 2vw;
+}
+
+main {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 70%;
+    margin-top: 4vw;
+    
 }
 
 .login-menu {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
-    gap: 1ch;
+    width: 60%;
+    
 }
 
+.seleccion {
+    display: flex;
+    flex-direction: column;
+}
+.avatarseleccionado {
+    height: 20vh;
+    padding: 1vw;
+    margin-bottom: 3vh;
+    opacity: 100;
+}
+
+.avatares {
+    width: 45%;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 2vw;
+
+}
+.av {
+    width: 40px;
+    height: 40px;
+    padding: 1vw;
+    cursor: pointer;
+}
 .login-button {
-    background-color: grey;
+    background-color: rgb(88, 88, 88);
     color: white;
     text-decoration: none;
     padding: 0.5rem;
     border: 2px solid black;
+    margin-top: 2vh;
+    text-align: center;
+    cursor: pointer;
 }
 
-.slot {
-    display: flex;
-    gap: 3rem;
-    align-items: center;
+.info-jugadores {
+    width: 30%;
+}
 
+.avatarjugador {
+    height: 3.5vw;
+    align-self: center;
+}
+
+.nombre-jugador {
+    align-self: center;
+}
+
+.datos-jugador {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    
+}
+
+.estado-jugador-pendiente {
+    width: 7vw;
+    background-color: yellow;
+    border: solid 1px black;
+    padding: 0.5vw;
+    color: black;
+    text-align: center;
+}
+.estado-jugador-listo {
+    width: 7vw;
+    background-color: green;
+    border: solid 1px black;
+    padding: 0.5vw;
+    color: black;
+    text-align: center;
+}
+.inicia-partida{
+    display: flex;
+    justify-content: center;
+    margin-top: 3vw;
+}
+.start-button {
+    align-self: center;
+    background-color: rgb(88, 88, 88);
+    padding: 1vw;
+    text-align: center;
+    box-shadow: 7px 7px 2px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
 }
