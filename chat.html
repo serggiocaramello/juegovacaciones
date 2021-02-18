@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Original</title>
+    <script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
+</head>
+
+<body>
+
+    <div class="uno">
+        <div class="game"></div>
+        <div class="chat">
+            <div id="mensajes" class="mensajes">                
+            </div>
+            <div class="inputealo"><input id="inputin" class="inputin" placeholder="inputeamelo todo"
+                    type="text"><button type="button" onclick="mostrar()">Enviar</button>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .uno {
+        display: grid;
+        grid-template-columns: 80% 20%;
+        width: 100vw;
+        height: 100vh;
+        background-color: red;
+    }
+
+    .game {
+        background-color: lightcyan;
+    }
+
+    .chat {
+        display: flex;
+        flex-wrap: wrap;
+        background-color: white;
+        border: 5px solid grey;
+    }
+
+    .mensajes {
+        display: flex;
+        flex-direction: column-reverse;
+        height: 90vh;
+    }
+
+    .inputealo {
+        width: 100%;
+        align-self: flex-end;
+    }
+
+    .inputin {
+        font-size: 1rem;
+        padding: 0.5rem;
+        width: 100%;
+    }
+
+    .baja {
+        align-self: flex-end;
+    }
+
+    button {
+        width: 100%;
+    }
+</style>
+
+<script>
+
+
+    var peerId = null;
+    var conn = null;
+
+    /* Datos */
+
+    function mostrar() {
+        let p = document.createElement("p");    
+        let mensajes = document.getElementById('mensajes');
+        let inputin = document.getElementById('inputin').value;
+        p.innerText = `Donatello: ${inputin}` ;
+        p.classList.add("msg_transmitido")               
+        mensajes.append(p)  
+        conn = peer.connect('Raphael');
+        // on open will be launch when you successfully connect to PeerServer
+        conn.on('open', function () {
+            // here you have conn.id
+            conn.send(inputin);            
+        });
+
+        conn.on('data', function (data) {
+                    let p = document.createElement('p')
+                    p.classList.add("msg_transmitido")
+                    p.innerText = `Donatello: ${data}`
+                    mensajes.append(p)
+
+                });
+    }
+
+
+    /* Conexión IIFE */
+
+    var peer = new Peer(id = "Donatello")
+
+    peer.on('open', function (id) {
+        console.log('My peer ID is: ' + id);
+    });
+
+
+    /*
+        conn.on('open', function () {
+            // Receive messages
+            conn.on('data', function (data) {
+                console.log('Received', data);
+            });
+    
+            // Send messages
+            conn.send('Hello!');
+        }); */
+
+
+
+</script>
+
+</html>

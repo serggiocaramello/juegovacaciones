@@ -5,6 +5,12 @@ const tl = gsap.timeline();
 let cantidadCartasPozo = 0;
 // Mazo de prueba, funciona con mayusculas y minusculas.
 const mazoCartas = [
+  "1Y",
+  "3Y",
+  "1B",
+  "0R",
+  "0B",
+  "0G",
   "1r",
   "VR",
   "+4r",
@@ -18,12 +24,6 @@ const mazoCartas = [
   "5G",
   "9B",
   "3R",
-  "1Y",
-  "3Y",
-  "1B",
-  "0R",
-  "0B",
-  "0G",
 ];
 
 //Indicamos quien esta jugando en este equipo.
@@ -115,97 +115,6 @@ class Carta {
     this.setNumero();
     this.setColor();
   }
-
-  crearElemento({ el, id, clase, src, text, padre, backgroundImage }) {
-    if (el && padre) {
-      const elemento = document.createElement(el);
-      if (id) {
-        elemento.setAttribute("id", id);
-      }
-      if (clase) {
-        elemento.classList.add(...clase.split(" "));
-      }
-      if (src) {
-        elemento.src = src;
-      }
-      if (text) {
-        elemento.textContent = text;
-      }
-      if (backgroundImage) {
-        elemento.style.backgroundImage = backgroundImage;
-      }
-      padre.appendChild(elemento);
-      return elemento;
-    }
-  }
-
-  primeraCartaPozo() {
-    const mazo = document.getElementById("mazo").getBoundingClientRect();
-    const pozo = document.getElementById("pozo").getBoundingClientRect();
-
-    const newCard = this.crearElemento({
-      el: "div",
-      clase: "carta cartajugada",
-      id: mazoCartas[0],
-      padre: tablero,
-      backgroundImage: `url("./assets/img/mazo/${mazoCartas[0].toUpperCase()}.svg")`,
-
-    });
-    // Elimina la primera carta del mazo.
-    mazoCartas.shift();
-    // Inicia el sonido al robar carta.
-    carta.soundFlip.play();
-    tl.fromTo(
-      newCard,
-      {
-        left: mazo.left,
-      },
-      {
-        duration: 1,
-        y: 0,
-        left: pozo.left,
-        ease: "back.out(1.2)",
-      }
-    );
-
-    // Se indica el valor de la carta del pozo.
-    this.cartaPozo = newCard.getAttribute("id");
-    // Se extraen el valor y el color.
-    this.setCartaPozoInfo();
-  }
-
-  getColor() {
-    return this.currentColor.style.backgroundColor;
-  }
-  getNumero() {
-    return this.currentNumero.textContent;
-  }
-
-  setColor(colorSelected) {
-    // color de la carta del pozo.
-    const cardColor = this.cartaPozo[this.cartaPozo.length - 1].toUpperCase();
-    if (colorSelected) {
-      this.currentColor.style.backgroundColor = this.colors[colorSelected];
-    } else if (
-      // Si la carta del pozo es un wild o un + 4, currentColor no se le asigna un valor a currentColor.
-      this.cartasWild.includes(this.cartaPozo.toUpperCase()) ||
-      this.cartasActivasMas4.includes(this.cartaPozo.toUpperCase())
-    ) {
-      this.currentColor.style.backgroundColor = "unset";
-    } else {
-      this.currentColor.style.backgroundColor = this.colors[cardColor];
-    }
-  }
-  setNumero() {
-    this.currentNumero.textContent = this.cartaPozo
-      .split("")
-      .slice(0, this.cartaPozo.length - 1)
-      .join("");
-  }
-  setCartaPozoInfo() {
-    this.setNumero();
-    this.setColor();
-  }
 }
 
 class Jugador {
@@ -217,16 +126,14 @@ class Jugador {
     this.avatar = avatar;
   }
 
-  crearElemento({ el, id, clase, src, text, padre, backgroundImage }) {
-
+  crearElemento({ el, id, clase, src, text, padre }) {
     if (el && padre) {
       const elemento = document.createElement(el);
       if (id) {
         elemento.setAttribute("id", id);
       }
       if (clase) {
-        elemento.classList.add(...clase.split(" "));
-
+        elemento.classList.add(clase);
       }
       if (src) {
         elemento.src = src;
@@ -234,10 +141,6 @@ class Jugador {
       if (text) {
         elemento.textContent = text;
       }
-      if (backgroundImage) {
-        elemento.style.backgroundImage = backgroundImage;
-      }
-
       padre.appendChild(elemento);
       return elemento;
     }
@@ -629,33 +532,22 @@ carta.setColor();
 carta.setNumero();
 
 // Creación de jugadores
-const jugador1 = new Jugador(
-  1,
-  "Leonardo",
-  "assets/img/avatares/01-mexican.svg"
-);
-const jugador2 = new Jugador(2, "Raphael", "assets/img/avatares/02-man.svg");
-const jugador3 = new Jugador(
-  3,
-  "Miguel Ángel",
-  "assets/img/avatares/03-pirates.svg"
-);
-// const jugador4 = new Jugador(4, "Donatello", "assets/img/avatares/04-girl.svg");
-// const jugadores = [jugador1, jugador2, jugador3, jugador4];
-const jugadores = [jugador1, jugador2, jugador3];
+const jugador4 = new Jugador(4, "Leonardo", "assets/img/avatares/01-mexican.svg");
+const jugador1 = new Jugador(1, "Raphael", "assets/img/avatares/02-man.svg");
+const jugador2 = new Jugador(2, "Miguel Ángel", "assets/img/avatares/03-pirates.svg");
+const jugador3 = new Jugador(3, "Donatello", "assets/img/avatares/04-girl.svg");
+const jugadores = [jugador2, jugador3, jugador4, jugador1];
+/* const jugadores = [jugador1, jugador2, jugador3]; */
 
-// Cuando inicia jugo
 jugadores.map((jugador) => {
-  jugador.imprimirInfo();
-  jugador.robarCarta();
+  jugador.imprimirInfo()
+  jugador.robarCarta()
 });
-
-carta.primeraCartaPozo();
 
 // Al cambiar de turno
 cambiarJugador.addEventListener("click", (e) => {
   e.preventDefault();
-  turno == 3 ? (turno = 1) : (turno = turno + incremento);
+  turno == 4 ? (turno = 1) : (++turno);
   //reiniciar segundos del contador
   gameContador.reset();
 });
@@ -672,9 +564,9 @@ mazo.addEventListener("click", () => {
     case 3:
       jugador3.turno();
       break;
-    // case 4:
-    //   jugador4.turno();
-    //   break;
+    case 4:
+      jugador4.turno();
+      break;
     default:
       break;
   }
@@ -724,28 +616,3 @@ gameContador.start();
 
 // To do
 // Implementar para 2 jugadores y 3 jugadores
-
-/* Nuevos Métodos */
-
-function animPintarCarta() {
-  let idCarta = "VR"
-  let pozo = document.getElementById("pozo").getBoundingClientRect();
-  tl.to(`[id='${idCarta}']`, {
-    top: pozo.top,
-    x: 0,
-    left: pozo.left,
-    duration: 1,
-    zIndex: cantidadCartasPozo,
-  });
-}
-function animPintarCarta2() {
-  let idCarta = "VR"
-  let pozo = document.getElementById("pozo").getBoundingClientRect();
-  tl.to(`[id='cartaJugador2-1']`, {
-    top: pozo.top,
-    x: 0,
-    left: pozo.left,
-    duration: 1,
-    zIndex: cantidadCartasPozo,
-  });
-}
