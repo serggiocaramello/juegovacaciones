@@ -146,12 +146,19 @@ class Jugador {
     }
   }
 
+  imprimirInfo() {
+    this.imprimirNombreTablero();
+    this.imprimirEmoticones();
+  }
+
   imprimirNombreTablero() {
     const infoJugador = this.crearElemento({
       el: "div",
       clase: `infojugador${this.idJugador}`,
       padre: tablero,
     });
+    console.log(infoJugador);
+
     const avatar = this.crearElemento({
       el: "img",
       src: this.avatar,
@@ -173,7 +180,14 @@ class Jugador {
         clase: "botoncastigo",
         padre: infoJugador,
       });
+    }
+  }
 
+  imprimirEmoticones() {
+    if (this.idJugador == jugadorEsteEquipo) {
+      const infoJugador = document.getElementsByClassName(
+        `infojugador${this.idJugador}`
+      )[0];
       const emoticonMenu = this.crearElemento({
         el: "nav",
         clase: "circular-menu",
@@ -209,6 +223,26 @@ class Jugador {
         clase: "menu-button",
         padre: emoticonMenu,
       });
+
+      // funcion para posicionar emoticones y darles clase open al presionar boton emoticones
+      var items = document.querySelectorAll(".emoticon");
+
+      for (var i = 0, l = items.length; i < l; i++) {
+        items[i].style.left =
+          (78 - 10 * Math.cos(-0.5 * Math.PI - 2(1 / l) * i * Math.PI)).toFixed(
+            4
+          ) + "%";
+
+        items[i].style.top =
+          (30 + 35 * Math.sin(-0.5 * Math.PI - 2(1 / l) * i * Math.PI)).toFixed(
+            4
+          ) + "%";
+      }
+
+      document.querySelector(".menu-button").onclick = function (e) {
+        e.preventDefault();
+        document.querySelector(".circle").classList.toggle("open");
+      };
     }
   }
 
@@ -510,7 +544,7 @@ const jugador3 = new Jugador(
 // const jugadores = [jugador1, jugador2, jugador3, jugador4];
 const jugadores = [jugador1, jugador2, jugador3];
 
-jugadores.map((jugador) => jugador.imprimirNombreTablero());
+jugadores.map((jugador) => jugador.imprimirInfo());
 
 // Al cambiar de turno
 cambiarJugador.addEventListener("click", (e) => {
