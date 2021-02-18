@@ -658,8 +658,6 @@ body {
 
 .menu-button {
   position: relative;
-  /*     top: calc(50% - 30px);
-    left: calc(50% - 30px); */
   border-radius: 50%;
   display: block;
   height: 3rem;
