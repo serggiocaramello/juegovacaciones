@@ -1,15 +1,31 @@
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
 import Express from "express";
+import * as http from 'http';
 import { erradicate, deck1, deck2, deck3, deck4 } from "./cards.js";
 import _ from "lodash";
 import cors from "cors";
 import Http from "http";
 import * as Io from "socket.io";
 
+
+
+
 const app = Express();
 const http = Http.Server(app);
 const io = new Io.Server(http, { cors: { origin: "*" } });
 app.use(cors());
 const port = 3000;
+
+
+
+/* Server Http */
+
+
+
+/* Peer Implementación */
+
+
 
 //GET, PUT, POST, DELETE
 
@@ -114,12 +130,14 @@ http.listen(8080, () => {
 app.get("/cartas", (req, res) => {
     res.send(erradicate())
 })
+
 app.get("/pozo", (req, res) => {
     res.send();
     /* res.json({ msg: 'This is CORS-enabled for all origins!' }) */
 })
 app.get("/jugador1", (req, res) => {
     res.send(deck1);
+    console.log(deck1)
     /* res.json({ msg: 'This is CORS-enabled for all origins!' }) */
 })
 app.get("/jugador2", (req, res) => {

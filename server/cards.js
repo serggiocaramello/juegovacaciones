@@ -12,14 +12,14 @@ let deckI = [
     "1g", "2g", "3g", "4g", "5g", "6g", "7g", "8g", "9g",
 ]
 
-/* Acá creamos mazos de 7 cartas */
-let deck1 = _.sampleSize(deckI, 7);
+/* Acá creamos mazos de 5 cartas */
+let deck1 = _.sampleSize(deckI, 5);
 let deckR = _.difference(deckI, deck1);
-let deck2 = _.sampleSize(deckR, 7);
+let deck2 = _.sampleSize(deckR, 5);
 deckR = _.difference(deckR, deck2);
-let deck3 = _.sampleSize(deckR, 7);
+let deck3 = _.sampleSize(deckR, 5);
 deckR = _.difference(deckR, deck3);
-let deck4 = _.sampleSize(deckR, 7);
+let deck4 = _.sampleSize(deckR, 5);
 deckR = _.difference(deckR, deck4);
 
 let cardsTaken = 3;
@@ -30,6 +30,14 @@ deckR = _.difference(deckR, cardsSended);
 const erradicate = () => {
     let cardsTaken2 = 5;
     let cardsSended3 = _.sampleSize(deckR, cardsTaken2);
+    deckR = _.difference(deckR, cardsSended3);
+    console.log(deckR)
+    return cardsSended3
+
+};
+
+const erradicate1 = () => {
+    let cardsSended3 = _.sampleSize(deckR, 1);
     deckR = _.difference(deckR, cardsSended3);
     console.log(deckR)
     return cardsSended3
