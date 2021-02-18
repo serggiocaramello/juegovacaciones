@@ -1,14 +1,11 @@
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 import Express from "express";
-import * as http from 'http';
 import { erradicate, deck1, deck2, deck3, deck4 } from "./cards.js";
 import _ from "lodash";
 import cors from "cors";
 import Http from "http";
 import * as Io from "socket.io";
-
-
 
 
 const app = Express();
@@ -18,12 +15,17 @@ app.use(cors());
 const port = 3000;
 
 
+/* Epsagon Calcetines */
+
+
+
 
 /* Server Http */
 
 
 
 /* Peer Implementación */
+
 
 
 

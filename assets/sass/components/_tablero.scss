@@ -1,10 +1,18 @@
+body {
+  background-image: url("./../img/bg.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+}
+
 .tablero {
-  width: 100%;
+  width: 80%;
   height: 100vh;
-  background-color: gray;
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
 }
 
 [class*="infojugador"] {
@@ -12,24 +20,122 @@
   align-items: center;
   position: absolute;
   color: #fff;
-  font-size: 2em;
+  font-size: 1.5em;
+  font-weight: 500;
   img {
-    border-radius: 50%;
-    margin-right: 0.5em;
-    width: 60px;
+    margin-right: 1em;
+    width: 50px;
   }
 }
 .infojugador1 {
-  bottom: 3rem;
+  bottom: 2rem;
 }
 .infojugador2 {
-  transform: rotate(90deg);
-  right: 3rem;
+  transform: rotate(-90deg);
+  right: -3rem;
+  img {
+    transform: rotate(90deg);
+  }
 }
 .infojugador3 {
-  top: 3rem;
+  top: 2rem;
 }
 .infojugador4 {
-  transform: rotate(-90deg);
-  left: 3rem;
+  transform: rotate(90deg);
+  left: -3rem;
+  img {
+    transform: rotate(-90deg);
+  }
+}
+
+.chat {
+  width: 20%;
+  height: 96vh;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+.info {
+  width: 6em;
+  position: absolute;
+  top: 1em;
+  left: 1em;
+}
+.timer {
+  text-align: center;
+  padding: 0.25em 1.25em;
+  background-color: rgba(255, 255, 255, 0.8);
+  color: black;
+  align-self: flex-start;
+  font-size: larger;
+  margin-bottom: 0.5em;
+}
+
+.infoPozo {
+  text-align: center;
+  padding: 0.25em 1em;
+  background-color: rgba(255, 255, 255, 0.8);
+  color: black;
+  align-self: flex-start;
+  font-size: larger;
+  display: flex;
+
+  .currentColor {
+    width: 1em;
+    margin-left: 1em;
+  }
+}
+
+.timealert {
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.8);
+  align-self: flex-start;
+  color: #ff0000;
+  font-size: larger;
+}
+.botoncastigo {
+  background-image: url(../img/botonUNOcircular.svg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 3rem;
+  width: 3rem;
+  border-radius: 50%;
+  margin-left: 1em;
+  cursor: pointer;
+  box-shadow: 0 0 6px 6px rgb(43, 42, 42);
+}
+.botoncastigo:active,
+.botoncastigo:focus {
+  box-shadow: 0 0 4px 4px rgb(43, 42, 42);
+}
+
+.colorPicker {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 8em;
+  border-radius: 50%;
+  border: 5px solid #fff;
+  overflow: hidden;
+  position: absolute;
+  top: calc(50%-4em);
+  left: calc(50%-4em);
+  z-index: 99;
+  display: none;
+  opacity: 0;
+  & > * {
+    width: 4em;
+    height: 4em;
+    cursor: pointer;
+  }
+  .R {
+    @include color-picker(red);
+  }
+  .B {
+    @include color-picker(blue);
+  }
+  .Y {
+    @include color-picker(yellow);
+  }
+  .G {
+    @include color-picker(green);
+  }
 }
