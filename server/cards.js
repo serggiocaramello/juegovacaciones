@@ -1,7 +1,6 @@
 import _ from "lodash";
 
 
-
 let deckI = [
     "0R", "1R", "2R", "3R", "4R", "5R", "6R", "7R", "8R", "9R",
     "0B", "1B", "2B", "3B", "4B", "5B", "6B", "7B", "8B", "9B",
@@ -48,17 +47,7 @@ const erradicate1 = () => {
 
 
 
-/* let cartaPozo = "1r";
-let cartaJugada = "1R";
 
-if (cartaPozo.toUpperCase == cartaJugada) {
-    jugadaPermitida(cartaJugada)
-} else {
-    console.log("la carta que jugaste no está permitida")
-}
-
-console.log(letcartaPozoR.toUpperCase(cartaPozo))
- */
 
 export { erradicate, deck1, deck2, deck3, deck4 }
 

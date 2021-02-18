@@ -5,11 +5,15 @@ import * as http from 'http';
 import { erradicate, deck1, deck2, deck3, deck4 } from "./cards.js";
 import _ from "lodash";
 import cors from "cors";
+import Http from "http";
+import * as Io from "socket.io";
 
 
 
 
 const app = Express();
+const http = Http.Server(app);
+const io = new Io.Server(http, { cors: { origin: "*" } });
 app.use(cors());
 const port = 3000;
 
@@ -24,6 +28,102 @@ const port = 3000;
 
 
 //GET, PUT, POST, DELETE
+
+/* Socket Io */
+
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/index.html');
+});
+
+let conectados = [];
+
+
+io.on('connection', (socket) => {
+
+    socket.on('usuario', (usuario) => {
+        console.log('Usuario ' + usuario + ' conectado con la id ' + socket.id);
+        conectados[usuario - 1] = socket.id
+    });
+
+
+
+
+    socket.on('inicioTurno', (turno) => {
+        socket.broadcast.emit("actualizarTurno", turno);
+        console.log("turno actualizado a: " + turno)
+        console.log(conectados)
+    });
+
+
+
+
+
+    /* Socket Io Juego */
+
+
+    /* 2.- Emitir Carta Jugada */
+
+    socket.on('emitirCartaJugada', (cartaJugada) => {
+        socket.broadcast.emit("actualizarCartaJugada", cartaJugada);
+        console.log("turno actualizado a: " + cartaJugada)
+    });
+
+
+    /* 3.- Emitir UNO */
+    socket.on('emitirUno', (estadoUno) => {
+        socket.broadcast.emit("actualizarUno", estadoUno);
+        console.log("Queda uno ")
+        io.to(conectados[0]).emit("hola", estadoUno);
+    });
+
+
+    /* 4.- Emitir Estado Denunciable */
+    socket.on('emitirEstadoDenunciable', (estadoDenunciable) => {
+        socket.broadcast.emit("actualizarEstadoDenunciable", estadoDenunciable);
+        console.log("Denunciable ")
+    });
+
+
+    /* 5.- Emitir Victoria */
+    socket.on('emitirVictoria', (idJugador) => {
+        socket.emit("actualizarEstadoVictoria", idJugador);
+        socket.broadcast.emit("actualizarEstadoVictoria", idJugador);
+        console.log("Victoria Jugador: " + idJugador)
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+});
+/* Fin Socket IO */
+
+
+
+
+
+
+http.listen(8080, () => {
+    console.log('listening socket on port 8080');
+});
 
 
 /* Path - Callback */

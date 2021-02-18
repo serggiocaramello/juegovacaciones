@@ -15,7 +15,10 @@
     "@mapbox/node-pre-gyp": "^1.0.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+
     "express-ws": "^4.0.0",
+        "http": "^0.0.1-security",
+
     "lodash": "^4.17.20",
     "peer": "^0.6.1",
     "simple-peer": "^9.9.3",
