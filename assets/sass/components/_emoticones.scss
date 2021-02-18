@@ -3,9 +3,7 @@
     width: 100px;
     height: 100px;
     margin: 0 auto;
-    position: absolute;
-    bottom: 6rem;
-    left:51vw;
+
 }
 .circle {
     width: 100px;
@@ -24,7 +22,7 @@
     -moz-transform: scale(1);
     transform: scale(1);
 }
-.circle img {
+.emoticon {
     display: block;
     height: 30px;
     width: 30px;
@@ -35,9 +33,9 @@
 
 }
 .menu-button {
-    position: absolute;
-    top: calc(50% - 30px);
-    left: calc(50% - 30px);
+    position: relative;
+/*     top: calc(50% - 30px);
+    left: calc(50% - 30px); */
     border-radius: 50%;
     display: block;
     height: 3rem;

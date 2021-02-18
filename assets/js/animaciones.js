@@ -199,6 +199,7 @@ class Jugador {
         this.crearElemento({
           el: "img",
           src: `assets/img/emoticons/${emoticon}`,
+          clase: "emoticon",
           padre: circle,
         });
       });
@@ -585,12 +586,12 @@ gameContador.start();
 // To do
 // Implementar para 2 jugadores y 3 jugadores
 
-var items = document.querySelectorAll('.circle img');
+var items = document.querySelectorAll('.emoticon');
 
 for(var i = 0, l = items.length; i < l; i++) {
-  items[i].style.left = (50 - 35*Math.cos(-0.5 * Math.PI - 2*(1/l)*i*Math.PI)).toFixed(4) + "%";
+  items[i].style.left = (78 - 10*Math.cos(-0.5 * Math.PI - 2*(1/l)*i*Math.PI)).toFixed(4) + "%";
   
-  items[i].style.top = (50 + 35*Math.sin(-0.5 * Math.PI - 2*(1/l)*i*Math.PI)).toFixed(4) + "%";
+  items[i].style.top = (30 + 35*Math.sin(-0.5 * Math.PI - 2*(1/l)*i*Math.PI)).toFixed(4) + "%";
 }
 
 document.querySelector('.menu-button').onclick = function(e) {

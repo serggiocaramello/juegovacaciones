@@ -623,4 +623,57 @@ body {
   width: 10%;
   height: auto;
 }
+
+.circular-menu {
+  border-radius: 50;
+  width: 100px;
+  height: 100px;
+  margin: 0 auto;
+}
+
+.circle {
+  width: 100px;
+  height: 100px;
+  opacity: 0;
+  -webkit-transform: scale(0);
+  transform: scale(0);
+  -webkit-transition: all 0.4s ease-out;
+  transition: all 0.4s ease-out;
+}
+
+.open.circle {
+  opacity: 1;
+  -webkit-transform: scale(1);
+  transform: scale(1);
+}
+
+.emoticon {
+  display: block;
+  height: 30px;
+  width: 30px;
+  margin-left: -20px;
+  margin-top: -20px;
+  position: absolute;
+}
+
+.menu-button {
+  position: relative;
+  /*     top: calc(50% - 30px);
+    left: calc(50% - 30px); */
+  border-radius: 50%;
+  display: block;
+  height: 3rem;
+  width: 3rem;
+  -webkit-box-shadow: 0 0 6px 6px #2b2a2a;
+          box-shadow: 0 0 6px 6px #2b2a2a;
+}
+
+.menu-button:active {
+  -webkit-box-shadow: 0 0 4px 4px #2b2a2a;
+          box-shadow: 0 0 4px 4px #2b2a2a;
+}
+
+.none {
+  visibility: hidden;
+}
 /*# sourceMappingURL=main.css.map */
