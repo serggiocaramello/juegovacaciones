@@ -42,7 +42,6 @@ socket.on('inicioTurno', turno => {
 
 
 
-
 /* Lógica de Juego */
 
 /* Lógica Primer Turno */
@@ -61,15 +60,15 @@ function jugadaInicial() {
             devolver4();
             jugadaInicial();
             break;
-        case cartaPozo == 'RV':
-            finTurno('RV');
+        case cartaPozo == 'V':
+            finTurno('V');
             break;
         case cartaPozo == 'SK':
             finTurno('SK');
             break;
         case cartaPozo == 'WD':
             elegirColor();
-            finTurno();
+            jugarTurno();
             break;
         default:
             jugarTurno();
@@ -80,7 +79,6 @@ function jugadaInicial() {
 
 function jugarTurno() {
     contadorTiempo();
-
 }
 
 
@@ -100,6 +98,7 @@ function mostrarTurno() {
     console.log("otro turno iniciado")
     mostrarJuegoOponente()
 }
+
 
 
 
