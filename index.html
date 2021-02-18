@@ -1,36 +1,49 @@
 <!DOCTYPE html>
 <html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Prueba animaciones</title>
+    <link rel="stylesheet" href="./assets/css/main.css" />
+  </head>
+  <body>
+    <div id="tablero" class="tablero">
+      <div class="info">
+        <div id="waiting_time" class="timer"></div>
+        <div id="infoPozo" class="infoPozo">
+          <div id="currentNumero" class="currentNumero"></div>
+          <div id="currentColor" class="currentColor"></div>
+        </div>
+      </div>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login: No nos demandes Mattel</title>
-  <link rel="stylesheet" href="./assets/sass/main.css" />
-</head>
+      <div id="colorPicker" class="colorPicker">
+        <div class="R"></div>
+        <div class="B"></div>
+        <div class="Y"></div>
+        <div class="G"></div>
+      </div>
 
-<body>
-
-  <div class="login-menu">
-    <h1> Bienvenidos a No Nos Demandes Mattel.</h1>
-    <h3>Elige un slot de jugador, asigna un nombre y avatar y comienza a jugar</h3>
-    <div class="slot"><input type="text" name="jugador" placeholder="Ingresa tu Usuario" id="slot1"> Elige tu avatar:
-      <img class="av" src="./assets/img/av1.jpg" alt=""> <a class="login-button" href="juego/jugador1.html">Ingresar</a>
+      <a href="#" id="cambiarjugador" class="cambiarjugador"
+        >Cambio de jugador</a
+      >
+      <div class="flechas">
+        <div class="arrows">
+          <img src="./assets/img/flecha1.svg" id="flecha1" class="flecha1" />
+          <img src="./assets/img/flecha2.svg" id="flecha2" class="flecha2" />
+        </div>
+        <div class="arrows">
+          <img src="./assets/img/flecha4.svg" id="flecha4" class="flecha4" />
+          <img src="./assets/img/flecha3.svg" id="flecha3" class="flecha3" />
+        </div>
+      </div>
+      <div id="mazo" class="mazo"></div>
+      <div id="pozo" class="pozo"></div>
+      <div class="manojugador"></div>
     </div>
-    <div class="slot"><input type="text" name="jugador" placeholder="Ingresa tu Usuario" id="slot2"> Elige tu avatar:
-      <img class="av" src="./assets/img/av2.jpg" alt=""> <a class="login-button" href="juego/jugador2.html">Ingresar</a>
-    </div>
-    <div class="slot"><input type="text" name="jugador" placeholder="Ingresa tu Usuario" id="slot3"> Elige tu avatar:
-      <img class="av" src="./assets/img/av3.jpg" alt=""> <a class="login-button" href="juego/jugador3.html">Ingresar</a>
-    </div>
-    <div class="slot"><input type="text" name="jugador" placeholder="Ingresa tu Usuario" id="slot4"> Elige tu avatar:
-      <img class="av" src="./assets/img/av4.jpg" alt=""> <a class="login-button" href="juego/jugador4.html">Ingresar</a>
-    </div>
-  </div>
-
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.0/gsap.min.js"></script>
-  <script src="./assets/js/animaciones.js"></script>
-  <script src="./assets/js/script.js"></script>
-</body>
-
+    <aside class="chat"></aside>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.0/gsap.min.js"></script>
+    <script src="./assets/js/animaciones.js"></script>
+    <script src="./assets/js/script.js"></script>
+  </body>
 </html>
+
