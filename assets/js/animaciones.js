@@ -115,6 +115,70 @@ class Carta {
     this.setNumero();
     this.setColor();
   }
+
+  crearElemento({ el, id, clase, src, text, padre, backgroundImage }) {
+    if (el && padre) {
+      const elemento = document.createElement(el);
+      if (id) {
+        elemento.setAttribute("id", id);
+      }
+      if (clase) {
+        elemento.classList.add(...clase.split(" "));
+      }
+      if (src) {
+        elemento.src = src;
+      }
+      if (text) {
+        elemento.textContent = text;
+      }
+      if (backgroundImage) {
+        elemento.style.backgroundImage = backgroundImage;
+      }
+      padre.appendChild(elemento);
+      return elemento;
+    }
+  }
+
+  primeraCartaPozo() {
+    const mazo = document.getElementById("mazo").getBoundingClientRect();
+    const pozo = document.getElementById("pozo").getBoundingClientRect();
+
+    const newCard = this.crearElemento({
+      el: "div",
+      clase: "carta cartajugada",
+      id: mazoCartas[0],
+      padre: tablero,
+      backgroundImage: `url("./assets/img/mazo/${mazoCartas[0].toUpperCase()}.svg")`,
+    });
+    // Elimina la primera carta del mazo.
+    mazoCartas.shift();
+    // Inicia el sonido al robar carta.
+    carta.soundFlip.play();
+    tl.fromTo(
+      newCard,
+      {
+        left: mazo.left,
+      },
+      {
+        duration: 1,
+        y: 0,
+        left: pozo.left,
+        ease: "back.out(1.2)",
+      }
+    );
+
+    // Se indica el valor de la carta del pozo.
+    this.cartaPozo = newCard.getAttribute("id");
+    // Se extraen el valor y el color.
+    this.setCartaPozoInfo();
+  }
+
+  getColor() {
+    return this.currentColor.style.backgroundColor;
+  }
+  getNumero() {
+    return this.currentNumero.textContent;
+  }
 }
 
 class Jugador {
@@ -126,20 +190,23 @@ class Jugador {
     this.avatar = avatar;
   }
 
-  crearElemento({ el, id, clase, src, text, padre }) {
+  crearElemento({ el, id, clase, src, text, padre, backgroundImage }) {
     if (el && padre) {
       const elemento = document.createElement(el);
       if (id) {
         elemento.setAttribute("id", id);
       }
       if (clase) {
-        elemento.classList.add(clase);
+        elemento.classList.add(...clase.split(" "));
       }
       if (src) {
         elemento.src = src;
       }
       if (text) {
         elemento.textContent = text;
+      }
+      if (backgroundImage) {
+        elemento.style.backgroundImage = backgroundImage;
       }
       padre.appendChild(elemento);
       return elemento;
@@ -509,12 +576,15 @@ class Sound {
   constructor(src) {
     this.sound = document.createElement("audio");
     this.sound.src = src;
+    this.sound.setAttribute("id", "sound");
     this.sound.setAttribute("preload", "auto");
     this.sound.setAttribute("controls", "none");
     this.sound.style.display = "none";
   }
   play() {
-    document.body.appendChild(this.sound);
+    if (document.getElementById("sound")) {
+      document.body.appendChild(this.sound);
+    }
     this.sound.play();
   }
   stop() {
@@ -547,12 +617,18 @@ const jugador3 = new Jugador(
 // const jugadores = [jugador1, jugador2, jugador3, jugador4];
 const jugadores = [jugador1, jugador2, jugador3];
 
-jugadores.map((jugador) => jugador.imprimirInfo());
+// Cuando inicia jugo
+jugadores.map((jugador) => {
+  jugador.imprimirInfo();
+  jugador.robarCarta();
+});
+
+carta.primeraCartaPozo();
 
 // Al cambiar de turno
 cambiarJugador.addEventListener("click", (e) => {
   e.preventDefault();
-  turno == 3 ? (turno = 1) : (turno = +incremento);
+  turno == 3 ? (turno = 1) : (turno = turno + incremento);
   //reiniciar segundos del contador
   gameContador.reset();
 });
