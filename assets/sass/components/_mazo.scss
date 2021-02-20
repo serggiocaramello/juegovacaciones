@@ -1,21 +1,43 @@
 .mazo {
-  margin-right: 1em;
   background-image: url("./../img/mazo/UNOPortada.svg");
   background-size: cover;
   z-index: 1;
 }
 
 .carta {
+  z-index: 1;
   width: 71px;
   height: 100px;
   position: absolute;
-  @extend .mazo;
   background-image: unset;
   margin: 0;
-  z-index: 0;
+  transform-style: preserve-3d;
 }
 
-.facedown {
+.cartajugada {
+  z-index: $z-pozo;
+}
+
+.carta-robada {
+  z-index: $z-carta;
+}
+
+.front-face,
+.back-face {
+  width: 71px;
+  height: 100px;
+  position: absolute;
   background-image: url("./../img/mazo/UNOPortada.svg");
   background-size: cover;
+  top: 0;
+  left: 0;
+  backface-visibility: hidden;
+}
+
+.back-face {
+  background-image: url("./../img/mazo/UNOPortada.svg");
+}
+
+.front-face {
+  transform: rotateY(180deg);
 }

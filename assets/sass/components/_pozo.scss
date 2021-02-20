@@ -1,8 +1,5 @@
 .pozo {
-  @extend .mazo;
-  // background-color: red;
-  margin-right: 0;
+  z-index: 1;
   width: 71px;
   height: 100px;
-  z-index: 0;
 }

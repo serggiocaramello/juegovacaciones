@@ -347,25 +347,51 @@ body {
   font-weight: 300;
 }
 
-.mazo, .carta, .pozo {
-  margin-right: 1em;
+.mazo {
   background-image: url("./../img/mazo/UNOPortada.svg");
   background-size: cover;
   z-index: 1;
 }
 
 .carta {
+  z-index: 1;
   width: 71px;
   height: 100px;
   position: absolute;
   background-image: unset;
   margin: 0;
-  z-index: 0;
+  -webkit-transform-style: preserve-3d;
+          transform-style: preserve-3d;
 }
 
-.facedown {
+.cartajugada {
+  z-index: 10;
+}
+
+.carta-robada {
+  z-index: 20;
+}
+
+.front-face,
+.back-face {
+  width: 71px;
+  height: 100px;
+  position: absolute;
   background-image: url("./../img/mazo/UNOPortada.svg");
   background-size: cover;
+  top: 0;
+  left: 0;
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+}
+
+.back-face {
+  background-image: url("./../img/mazo/UNOPortada.svg");
+}
+
+.front-face {
+  -webkit-transform: rotateY(180deg);
+          transform: rotateY(180deg);
 }
 
 body {
@@ -574,10 +600,9 @@ body {
 }
 
 .pozo {
-  margin-right: 0;
+  z-index: 1;
   width: 71px;
   height: 100px;
-  z-index: 0;
 }
 
 .cambiarjugador {
