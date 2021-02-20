@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login: No nos demandes Mattel</title>
+    <link rel="stylesheet" href="./assets/css/main.css" />
+</head>
+<body class="login-body">
+    <div class="opacidad">
+    </div>
+    <header class="login-header">
+        <p class="titulo"> ¡Bienvenido!</p>
+        <p class= "subtitulo">Elige un nombre y un avatar y ya puedes comenzar a jugar</p>
+    </header>
+    <main>
+        <div class="login-menu">
+            <div class="seleccion">
+                <img class="avatarseleccionado" id="avatarseleccionado" src="/assets/img/avatares/36-user.svg">
+                <input type="text" name="jugador" placeholder="Ingresa tu Nombre" id="slot">
+                <a id="login-boton" class="login-button">Ingresar</a>
+            </div>
+            <div class="avatares" id="avatares">
+                <img class="av" id ="av" src="/assets/img/avatares/27-ninja.svg">
+                <img class="av" id ="av" src="/assets/img/avatares/13-rock.svg">
+                <img class="av" id ="av" src="/assets/img/avatares/48-girl.svg">
+                <img class="av" id ="av" src="/assets/img/avatares/36-user.svg">
+                <img class="av" id ="av" src="/assets/img/avatares/37-dj.svg">
+                <img class="av" id ="av" src="/assets/img/avatares/18-baby.svg">
+                <img class="av" id ="av" src="/assets/img/avatares/41-cowboy.svg">
+                <img class="av" id ="av" src="/assets/img/avatares/50-king.svg">
+                <img class="av" id ="av" src="/assets/img/avatares/28-soldier.svg">
+                <img class="av" id ="av" src="/assets/img/avatares/40-safari.svg">
+                <img class="av" id ="av" src="/assets/img/avatares/45-doctor.svg">
+                <img class="av" id ="av" src="/assets/img/avatares/11-girl.svg">
+                <img class="av" id ="av" src="/assets/img/avatares/06-chinese.svg">
+                <img class="av" id ="av" src="/assets/img/avatares/09-french.svg">
+                <img class="av" id ="av" src="/assets/img/avatares/20-clown.svg">
+                <img class="av" id ="av" src="/assets/img/avatares/30-viking.svg">
+                <img class="av" id ="av" src="/assets/img/avatares/38-girl.svg">
+                <img class="av" id ="av" src="/assets/img/avatares/47-scientist.svg">
+                <img class="av" id ="av" src="/assets/img/avatares/03-pirates.svg">
+                <img class="av" id ="av" src="/assets/img/avatares/21-indian.svg">
+            </div> 
+        </div>
+        <div class="informacion-jugadores" id="info-jugadores">
+            <div class="datos-jugador">
+                <img id="avatar-jugador1" class="avatarjugador">
+                <h3 id="jugador1" class= "nombre-jugador"></h3>
+                <p id="estado-jugador1"></p>
+            </div>
+            <div class="datos-jugador">
+            <img id="avatar-jugador2" class="avatarjugador" src="assets/img/avatares/37-dj.svg">
+            <h3 id="jugador2" class= "nombre-jugador">Donatello</h3>
+            <p id="estado-jugador2" class="estado-jugador-listo">Preparado</p>
+            </div>
+            <div class="datos-jugador">
+            <img id="avatar-jugador3" class="avatarjugador" src="assets/img/avatares/01-mexican.svg">
+            <h3 id="jugador3" class= "nombre-jugador">Rafael</h3>
+            <p id="estado-jugador3" class="estado-jugador-listo">Preparado</p>
+            </div>
+            <div class="datos-jugador">
+            <img id="avatar-jugador4" class="avatarjugador" src="assets/img/avatares/04-girl.svg">
+            <h3 id="jugador4" class= "nombre-jugador">April</h3>
+            <p id="estado-jugador4" class="estado-jugador-listo">Preparado</p>
+            </div>
+        </div>
+    </main>
+<div class="inicia-partida"><a id="start-button" class="start-button">COMENZAR PARTIDA</a></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.0/gsap.min.js"></script>
+<script src="./assets/js/login.js"></script>
+</body>
+</html>

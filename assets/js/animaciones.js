@@ -2,6 +2,8 @@ const mazo = document.getElementById("mazo");
 const tablero = document.getElementById("tablero");
 const cambiarJugador = document.getElementById("cambiarjugador");
 const tl = gsap.timeline();
+const displayEmoticon = document.getElementById("display-emoticon");
+const displayNombre = document.getElementById("display-nombre");
 let cantidadCartasPozo = 0;
 // Mazo de prueba, funciona con mayusculas y minusculas.
 const mazoCartas = [
@@ -234,7 +236,7 @@ class Jugador {
 
   imprimirInfo() {
     this.imprimirNombreTablero();
-    this.imprimirEmoticones();
+    this.imprimirMenuEmoticones();
   }
 
   imprimirNombreTablero() {
@@ -267,7 +269,7 @@ class Jugador {
     }
   }
 
-  imprimirEmoticones() {
+  imprimirMenuEmoticones() {
     if (this.idJugador == jugadorEsteEquipo) {
       const infoJugador = document.getElementsByClassName(
         `infojugador${this.idJugador}`
@@ -314,18 +316,11 @@ class Jugador {
 
       for (var i = 0, l = items.length; i < l; i++) {
         items[i].style.left =
-          (
-            78 -
-            10 * Math.cos(-0.5 * Math.PI - 2 * (1 / l) * i * Math.PI)
-          ).toFixed(4) + "%";
+          (50 - 35 * Math.cos(-0.5 * Math.PI - 2 * (1 / l) * i * Math.PI)).toFixed(4) + "%";
 
         items[i].style.top =
-          (
-            30 +
-            35 * Math.sin(-0.5 * Math.PI - 2 * (1 / l) * i * Math.PI)
-          ).toFixed(4) + "%";
+          (54 + 35 * Math.sin(-0.5 * Math.PI - 2 * (1 / l) * i * Math.PI)).toFixed(4) + "%";
       }
-
       document.querySelector(".menu-button").onclick = function (e) {
         e.preventDefault();
         document.querySelector(".circle").classList.toggle("open");
@@ -678,13 +673,13 @@ jugadores.map((jugador) => {
 });
 
 // Al cambiar de turno
-cambiarJugador.addEventListener("click", (e) => {
+/* cambiarJugador.addEventListener("click", (e) => {
   e.preventDefault();
   // Cuando hay cambio de sentido incremento debera ser -1
   turno == 4 ? (turno = 1) : (turno += incremento);
   //reiniciar segundos del contador
   gameContador.reset();
-});
+}); */
 
 // Al presionar el mazo
 mazo.addEventListener("click", () => {
@@ -784,6 +779,48 @@ function animPintarCarta2() {
     duration: 1,
   });
 }
+
+// Al seleccionar emoticon
+let emoticones = Array.from(document.querySelectorAll(".emoticon"));
+emoticones.map(emoticon =>{
+  emoticon.addEventListener("click", (e) => {
+    imprimirEmoticon(e.target)
+  })
+})
+// Imprime emoticon seleccionado al centro del tablero
+function imprimirEmoticon(el){
+  let emoticonSeleccionado = el;
+  srcEmoticon = emoticonSeleccionado.getAttribute("src");
+  displayEmoticon.style.backgroundImage = `url("./${srcEmoticon}")`
+  displayNombre.textContent = jugador1.nombre;
+  gsap.fromTo(displayEmoticon,{
+    opacity: 0,
+    duration: 1
+    },
+    {
+    opacity: 1,
+    duration: 1
+    });
+  gsap.fromTo(displayNombre,{
+    opacity: 0,
+    duration: 0.5,
+  },
+  {
+    opacity: 1,
+    duration: 0.5,
+  });  
+  gsap.to(displayEmoticon,{
+    opacity: 0,
+    duration: 0.3,
+    delay: 1.5
+  });
+  gsap.to(displayNombre,{
+    opacity: 0,
+    duration: 0.3,
+    delay: 1.5
+  });       
+}
+
 
 // Simulacion de oponentes jugando cartas
 const manoOponente2 = Array.from(document.querySelectorAll(`.jugador2`));
@@ -903,3 +940,82 @@ function oponenteJuegaCarta(idJugador, time) {
     }
   }
 }
+//Animacion de Victoria (no se si esto a aqui o en otro script pero necesitaba ver si funcionaba)
+var count = 300;
+particleClass = "particle",
+particleColors = ["#0095DA", "#FFDE00", "#00A651", "#EC1C24"],
+container = document.getElementById("container"),
+w = window.innerWidth,
+h = window.innerHeight;
+
+for (var i = 0; i < count; i++ ){
+    elem = document.createElement('div');
+    elem.className = particleClass;
+    container.appendChild(elem);
+    gsap.set(elem, {
+        x: gsap.utils.random(0, w),
+        y: gsap.utils.random(0, h) - (h*0.5),
+        scale: gsap.utils.random(0.5, 1),
+        backgroundColor : gsap.utils.random(particleColors)
+    });
+    anime(elem); 
+}
+
+function anime(elem) {
+    gsap.to(elem, gsap.utils.random(5, 10),{
+        y: h,
+        ease: "none",
+        repeat: -10,
+    });
+    gsap.to(elem, gsap.utils.random(1, 6),{
+        x: "+=50",
+        ease: "power1.inOut",
+        repeat: -1,
+        yoyo: true,
+    });
+    gsap.to(elem, gsap.utils.random(1, 2),{
+        opacity: 20,
+        ease: "power1.inOut",
+        repeat: -1,
+        yoyo: true,
+    });
+};
+
+var quote = document.getElementById("quote"),
+arr = quote.innerText.split(""),
+texto ="";
+
+for (var i = 0; i < arr.length; i++){
+    texto += "<span>" + arr[i] + "</span>";
+    };
+    
+quote.innerHTML = texto;
+
+var chars = quote.getElementsByTagName("span");
+var colorValue = "hsl(360, 75%, 90%)";
+var textShadowValue = "";
+textShadowValue += "0 0 0.15rem hsl(360, 70%, 50%),";
+textShadowValue += "0 0 0.3rem hsl(360, 70%, 50%),";
+textShadowValue += "0 0 0.45rem hsl(360, 70%, 40%),";
+textShadowValue += "0 0 0.6rem hsl(360, 70%, 40%),";
+textShadowValue += "0 0 0.75rem hsl(360, 70%, 30%),";
+textShadowValue += "0 0 0.9rem hsl(360, 70%, 30%)";
+var duration = 2;
+
+for (var j = 0; j < chars.length; j++) {
+    gsap.to(chars[j],{
+        duration: duration,
+        repeat: -1,
+        ease: "none",
+        color: colorValue,
+        textShadow: textShadowValue,
+        delay: j * (duration/ chars.length)
+    });
+}
+
+const modalVictoria = document.getElementById("modalvictoria");
+const botonVictoria = document.getElementById("btn-modal");
+
+botonVictoria.addEventListener("click", () => {
+  modalVictoria.style.display = "flex"
+})

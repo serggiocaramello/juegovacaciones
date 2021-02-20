@@ -6,7 +6,16 @@
     <title>Prueba animaciones</title>
     <link rel="stylesheet" href="./assets/css/main.css" />
   </head>
-  <body>
+  <body class="tablero-body">
+    <div class="modal-victoria" id="modalvictoria">
+      <img class="logouno" src="/assets/img/logoUNO.png" alt="" />
+      <div id="container">
+        <div class="particle"></div>
+        <div class="text-effects">
+          <p id="quote">¡Felicitaciones, ganaste la partida!</p>
+        </div>
+      </div>
+    </div>
     <div id="tablero" class="tablero">
       <div class="info">
         <div id="waiting_time" class="timer"></div>
@@ -15,17 +24,22 @@
           <div id="currentColor" class="currentColor"></div>
         </div>
       </div>
-
       <div id="colorPicker" class="colorPicker">
         <div class="R"></div>
         <div class="B"></div>
         <div class="Y"></div>
         <div class="G"></div>
       </div>
+      <div id="panel-emoticones">
+        <div id="display-emoticon"></div>
+        <p id="display-nombre"></p>
+      </div>
 
-      <a href="#" id="cambiarjugador" class="cambiarjugador"
+      <!-- <a href="#" id="cambiarjugador" class="cambiarjugador"
         >Cambio de jugador</a
-      >
+      > -->
+      <button id="btn-modal" class="btn">Victoria</button>
+
       <div class="flechas">
         <div class="arrows">
           <img src="./assets/img/flecha1.svg" id="flecha1" class="flecha1" />
@@ -40,6 +54,7 @@
       <div id="pozo" class="pozo"></div>
       <div class="manojugador"></div>
     </div>
+
     <aside class="chat"></aside>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.0/gsap.min.js"></script>
     <script src="./assets/js/animaciones.js"></script>
