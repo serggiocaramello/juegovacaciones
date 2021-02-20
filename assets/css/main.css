@@ -414,7 +414,7 @@ body {
 }
 
 .infojugador1 {
-  bottom: 2rem;
+  bottom: 1rem;
 }
 
 .infojugador2 {
@@ -542,35 +542,35 @@ body {
 }
 
 .colorPicker .R {
-  background-color: red;
+  background-color: #EC1C24;
 }
 
 .colorPicker .R:hover {
-  background-color: #990000;
+  background-color: #950d12;
 }
 
 .colorPicker .B {
-  background-color: blue;
+  background-color: #0095DA;
 }
 
 .colorPicker .B:hover {
-  background-color: #000099;
+  background-color: #004f74;
 }
 
 .colorPicker .Y {
-  background-color: yellow;
+  background-color: #FFDE00;
 }
 
 .colorPicker .Y:hover {
-  background-color: #999900;
+  background-color: #998500;
 }
 
 .colorPicker .G {
-  background-color: green;
+  background-color: #00A651;
 }
 
 .colorPicker .G:hover {
-  background-color: #001a00;
+  background-color: #00401f;
 }
 
 .pozo {
@@ -658,6 +658,8 @@ body {
 
 .menu-button {
   position: relative;
+  top: calc(-44% - 30px);
+  left: calc(60% - 30px);
   border-radius: 50%;
   display: block;
   height: 3rem;
@@ -671,8 +673,35 @@ body {
           box-shadow: 0 0 4px 4px #2b2a2a;
 }
 
-.none {
-  visibility: hidden;
+#panel-emoticones {
+  width: 7rem;
+  height: 8rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+#display-emoticon {
+  width: 4rem;
+  height: 4rem;
+  background-repeat: no-repeat;
+}
+
+#display-nombre {
+  color: #fff;
+  font-weight: 400;
+  margin-top: 0.5rem;
+  margin-bottom: 0;
 }
 
 .av {

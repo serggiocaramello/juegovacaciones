@@ -28,7 +28,7 @@ body {
   }
 }
 .infojugador1 {
-  bottom: 2rem;
+  bottom: 1rem;
 }
 .infojugador2 {
   transform: rotate(-90deg);
@@ -127,15 +127,15 @@ body {
     cursor: pointer;
   }
   .R {
-    @include color-picker(red);
+    @include color-picker(#EC1C24);
   }
   .B {
-    @include color-picker(blue);
+    @include color-picker(#0095DA);
   }
   .Y {
-    @include color-picker(yellow);
+    @include color-picker(#FFDE00);
   }
   .G {
-    @include color-picker(green);
+    @include color-picker(#00A651);
   }
 }

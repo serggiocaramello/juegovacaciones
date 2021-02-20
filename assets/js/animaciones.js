@@ -2,6 +2,8 @@ const mazo = document.getElementById("mazo");
 const tablero = document.getElementById("tablero");
 const cambiarJugador = document.getElementById("cambiarjugador");
 const tl = gsap.timeline();
+const displayEmoticon = document.getElementById("display-emoticon");
+const displayNombre = document.getElementById("display-nombre");
 let cantidadCartasPozo = 0;
 // Mazo de prueba, funciona con mayusculas y minusculas.
 const mazoCartas = [
@@ -211,7 +213,7 @@ class Jugador {
 
   imprimirInfo() {
     this.imprimirNombreTablero();
-    this.imprimirEmoticones();
+    this.imprimirMenuEmoticones();
   }
 
   imprimirNombreTablero() {
@@ -244,7 +246,7 @@ class Jugador {
     }
   }
 
-  imprimirEmoticones() {
+  imprimirMenuEmoticones() {
     if (this.idJugador == jugadorEsteEquipo) {
       const infoJugador = document.getElementsByClassName(
         `infojugador${this.idJugador}`
@@ -291,18 +293,11 @@ class Jugador {
 
       for (var i = 0, l = items.length; i < l; i++) {
         items[i].style.left =
-          (
-            78 -
-            10 * Math.cos(-0.5 * Math.PI - 2 * (1 / l) * i * Math.PI)
-          ).toFixed(4) + "%";
+          (50 - 35 * Math.cos(-0.5 * Math.PI - 2 * (1 / l) * i * Math.PI)).toFixed(4) + "%";
 
         items[i].style.top =
-          (
-            30 +
-            35 * Math.sin(-0.5 * Math.PI - 2 * (1 / l) * i * Math.PI)
-          ).toFixed(4) + "%";
+          (54 + 35 * Math.sin(-0.5 * Math.PI - 2 * (1 / l) * i * Math.PI)).toFixed(4) + "%";
       }
-
       document.querySelector(".menu-button").onclick = function (e) {
         e.preventDefault();
         document.querySelector(".circle").classList.toggle("open");
@@ -622,12 +617,12 @@ jugadores.map((jugador) => {
 });
 
 // Al cambiar de turno
-cambiarJugador.addEventListener("click", (e) => {
+/* cambiarJugador.addEventListener("click", (e) => {
   e.preventDefault();
   turno == 4 ? (turno = 1) : ++turno;
   //reiniciar segundos del contador
   gameContador.reset();
-});
+}); */
 
 // Al presionar el mazo
 mazo.addEventListener("click", () => {
@@ -728,4 +723,44 @@ function animPintarCarta2() {
     duration: 1,
     zIndex: cantidadCartasPozo,
   });
+}
+// Al seleccionar emoticon
+let emoticones = Array.from(document.querySelectorAll(".emoticon"));
+emoticones.map(emoticon =>{
+  emoticon.addEventListener("click", (e) => {
+    imprimirEmoticon(e.target)
+  })
+})
+// Imprime emoticon seleccionado al centro del tablero
+function imprimirEmoticon(el){
+  let emoticonSeleccionado = el;
+  srcEmoticon = emoticonSeleccionado.getAttribute("src");
+  displayEmoticon.style.backgroundImage = `url("./${srcEmoticon}")`
+  displayNombre.textContent = jugador1.nombre;
+  gsap.fromTo(displayEmoticon,{
+    opacity: 0,
+    duration: 1
+    },
+    {
+    opacity: 1,
+    duration: 1
+    });
+  gsap.fromTo(displayNombre,{
+    opacity: 0,
+    duration: 0.5,
+  },
+  {
+    opacity: 1,
+    duration: 0.5,
+  });  
+  gsap.to(displayEmoticon,{
+    opacity: 0,
+    duration: 0.3,
+    delay: 1.5
+  });
+  gsap.to(displayNombre,{
+    opacity: 0,
+    duration: 0.3,
+    delay: 1.5
+  });       
 }
