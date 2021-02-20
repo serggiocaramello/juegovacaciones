@@ -899,4 +899,82 @@ function oponenteJuegaCarta(e, idJugador, time) {
       break;
   }
 }
+//Animacion de Victoria (no se si esto a aqui o en otro script pero necesitaba ver si funcionaba)
+var count = 300;
+particleClass = "particle",
+particleColors = ["#f6e58d", "#ffbe76", "#ff7979", "#badc58"],
+container = document.getElementById("container"),
+w = container.offsetWidth,
+h = container.offsetHeight
 
+for (var i = 0; i < count; i++ ){
+    elem = document.createElement('div');
+    elem.className = particleClass;
+    container.appendChild(elem);
+    gsap.set(elem, {
+        x: gsap.utils.random(0, w),
+        y: gsap.utils.random(0, h) - (h*0.5),
+        scale: gsap.utils.random(0.5, 1),
+        backgroundColor : gsap.utils.random(particleColors)
+    });
+    anime(elem); 
+}
+
+function anime(elem) {
+    gsap.to(elem, gsap.utils.random(5, 10),{
+        y: h,
+        ease: "none",
+        repeat: -10,
+    });
+    gsap.to(elem, gsap.utils.random(1, 6),{
+        x: "+=50",
+        ease: "power1.inOut",
+        repeat: -1,
+        yoyo: true,
+    });
+    gsap.to(elem, gsap.utils.random(1, 2),{
+        opacity: 20,
+        ease: "power1.inOut",
+        repeat: -1,
+        yoyo: true,
+    });
+};
+
+var quote = document.getElementById("quote"),
+arr = quote.innerText.split(""),
+texto ="";
+
+for (var i = 0; i < arr.length; i++){
+    texto += "<span>" + arr[i] + "</span>";
+    };
+    
+quote.innerHTML = texto;
+
+var chars = quote.getElementsByTagName("span");
+var colorValue = "hsl(360, 75%, 90%)";
+var textShadowValue = "";
+textShadowValue += "0 0 0.15rem hsl(360, 70%, 50%),";
+textShadowValue += "0 0 0.3rem hsl(360, 70%, 50%),";
+textShadowValue += "0 0 0.45rem hsl(360, 70%, 40%),";
+textShadowValue += "0 0 0.6rem hsl(360, 70%, 40%),";
+textShadowValue += "0 0 0.75rem hsl(360, 70%, 30%),";
+textShadowValue += "0 0 0.9rem hsl(360, 70%, 30%)";
+var duration = 2;
+
+for (var j = 0; j < chars.length; j++) {
+    gsap.to(chars[j],{
+        duration: duration,
+        repeat: -1,
+        ease: "none",
+        color: colorValue,
+        textShadow: textShadowValue,
+        delay: j * (duration/ chars.length)
+    });
+}
+
+const modalVictoria = document.getElementById("modalvictoria");
+const botonVictoria = document.getElementById("btn-modal");
+
+botonVictoria.addEventListener("click", () => {
+  modalVictoria.style.display = "block"
+})
