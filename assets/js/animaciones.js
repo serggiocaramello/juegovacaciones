@@ -195,19 +195,12 @@ class Carta {
     return this.currentNumero.textContent;
   }
 
-  borrarCartaPozo(e, time) {
-    setTimeout(() => {
-      document.getElementById(this.cartaPozo).remove();
-      if (e.target.parentElement.getAttribute("id") !== null) {
-        // Si la carta tiene id, this.cartaPozo toma ese valor, esto es valido solamente cuando el jugador 1 selecciona una carta, ahi el event es click, en el caso de los demas jugadores, no hay evento, ellos envian directamente el dato.
-        this.cartaPozo = e.target.parentElement.getAttribute("id");
-      } else {
-        this.cartaPozo = cartaJugadaOponente;
-        console.log(this.cartaPozo);
-      }
-      this.setCartaPozoInfo();
-    }, time);
-  }
+  // borrarCartaPozo(e) {
+  //   console.log(this.cartaPozo);
+  //   document.getElementById(this.cartaPozo).remove();
+  //   this.cartaPozo = e.target.parentElement.getAttribute("id");
+  //   this.setCartaPozoInfo();
+  // }
 }
 
 class Jugador {
@@ -386,8 +379,8 @@ class Jugador {
           {
             // top: posicionMazo.top,
             bottom: posicionMazo.bottom,
-            // x: 0,
-            // y: 0,
+            x: 0,
+            y: 0,
             left: posicionMazo.left,
             rotateX: 0,
           },
@@ -395,8 +388,8 @@ class Jugador {
             // top: "unset",
             duration: tiempo,
             bottom: "6rem",
-            // x: 0,
-            // y: 0,
+            x: 0,
+            y: 0,
             rotate: 180,
             rotateX: 180,
             ease: "back.out(1.2)",
@@ -532,10 +525,10 @@ class Jugador {
 
   animSeleccionarCarta(e) {
     let idCarta = e.target.parentElement.getAttribute("id");
-    // let mazo = document.getElementById("mazo").getBoundingClientRect();
     let pozo = document.getElementById("pozo").getBoundingClientRect();
     let cartaSeleccionada = e.target.parentElement.getBoundingClientRect();
-    const time = 1;
+    // Tiempo que dura la animación
+    const time = 0.5;
     tl.fromTo(
       `[id='${idCarta}']`,
       {
@@ -551,7 +544,21 @@ class Jugador {
         y: 0,
         left: pozo.left,
         duration: time,
-        onComplete: carta.borrarCartaPozo(e, time * 1000),
+        onComplete: () => {
+          // Se elimina la clase "carta-robada"
+          e.target.parentElement.classList.remove(
+            "carta-robada",
+            `jugador${this.idJugador}`
+          );
+          // Se borra la carta anterior del pozo
+          // carta.borrarCartaPozo(e);
+          console.log(carta.cartaPozo);
+          document.getElementById(carta.cartaPozo).remove();
+          carta.cartaPozo = idCarta;
+          carta.setCartaPozoInfo();
+          // Para que las cartas de la mano se reordenen
+          this.animReordenarCartas();
+        },
       }
     );
     if (carta.cartasCambioSentido.includes(idCarta)) {
@@ -583,15 +590,6 @@ class Jugador {
 
             // Animacion cuando carta seleccionada va al pozo
             this.animSeleccionarCarta(e);
-
-            // Se elimina la clase "carta-robada"
-            e.target.parentElement.classList.remove(
-              "carta-robada",
-              `jugador${this.idJugador}`
-            );
-
-            // Para que las cartas de la mano se reordenen
-            this.animReordenarCartas();
           }
         },
         true
@@ -674,7 +672,6 @@ const jugador3 = new Jugador(
 );
 const jugador4 = new Jugador(4, "Donatello", "assets/img/avatares/04-girl.svg");
 const jugadores = [jugador1, jugador2, jugador3, jugador4];
-/* const jugadores = [jugador1, jugador2, jugador3]; */
 
 jugadores.map((jugador) => {
   jugador.imprimirInfo();
@@ -683,7 +680,8 @@ jugadores.map((jugador) => {
 // Al cambiar de turno
 cambiarJugador.addEventListener("click", (e) => {
   e.preventDefault();
-  turno == 4 ? (turno = 1) : ++turno;
+  // Cuando hay cambio de sentido incremento debera ser -1
+  turno == 4 ? (turno = 1) : (turno += incremento);
   //reiniciar segundos del contador
   gameContador.reset();
 });
@@ -792,73 +790,116 @@ const manoOponente2 = Array.from(document.querySelectorAll(`.jugador2`));
 const manoOponente3 = Array.from(document.querySelectorAll(`.jugador3`));
 const manoOponente4 = Array.from(document.querySelectorAll(`.jugador4`));
 manoOponente2.map((x) =>
-  x.addEventListener("click", (e) => oponenteJuegaCarta(e, 2, 1))
+  x.addEventListener("click", (e) => oponenteJuegaCarta(2, 1))
 );
 manoOponente3.map((x) =>
-  x.addEventListener("click", (e) => oponenteJuegaCarta(e, 3, 1))
+  x.addEventListener("click", (e) => oponenteJuegaCarta(3, 1))
 );
 manoOponente4.map((x) =>
-  x.addEventListener("click", (e) => oponenteJuegaCarta(e, 4, 1))
+  x.addEventListener("click", (e) => oponenteJuegaCarta(4, 1))
 );
 
 // Variable que guarda el id de la carta jugada por un oponente
-let cartaJugadaOponente = "3R";
+let mano = ["3r", "8r", "5g", "9b", "3r", "1y", "3y", "1b", "1b", "1g"];
+
+// Funcion que se ejecutara despues de la animación
+function animOponenteOrdenaCartas(idJugador, cartOpJugada, manoOponente) {
+  // Se elimina la clase "carta-robada"
+  cartOpJugada.classList.remove("carta-robada", `jugador${idJugador}`);
+  // Se agrega la clase cartajugada
+  cartOpJugada.classList.add("cartajugada");
+  // Se borra la carta anterior del pozo
+  document.getElementById(carta.cartaPozo).remove();
+  carta.cartaPozo = cartOpJugada.id;
+  carta.setCartaPozoInfo();
+
+  // Variable que determina la posicion de cada carta.
+  let posCarta = -(
+    ((this.cantidadCartasMano - 1) *
+      (carta.separacionCartas + carta.anchoCarta)) /
+    2
+  );
+
+  // La funcion ordena cada una de las cartas de la mano.
+  manoOponente.map((cartaEnMano) => {
+    // Para que las cartas de la mano se reordenen
+    switch (idJugador) {
+      case 2:
+        jugador2.cantidadCartasMano--;
+        tl.to(cartaEnMano, {
+          duration: 0.15,
+          y: -posCarta,
+        });
+        posCarta += +carta.anchoCarta + carta.separacionCartas;
+        break;
+      case 3:
+        jugador3.cantidadCartasMano--;
+        tl.to(cartaEnMano, {
+          duration: 0.15,
+          x: -posCarta,
+        });
+        posCarta += +carta.anchoCarta + carta.separacionCartas;
+        break;
+      case 4:
+        tl.to(cartaEnMano, {
+          duration: 0.15,
+          y: -posCarta,
+        });
+        posCarta += +carta.anchoCarta + carta.separacionCartas;
+        break;
+      default:
+        break;
+    }
+  });
+}
 
 // Metodo para animar cartas de oponentes
-function oponenteJuegaCarta(e, idJugador, time) {
+function oponenteJuegaCarta(idJugador, time) {
   const pozo = document.getElementById("pozo").getBoundingClientRect();
   const manoOponente = Array.from(
     document.querySelectorAll(`.jugador${idJugador}`)
   );
-  const cartaOponenteJugada = manoOponente[manoOponente.length - 1];
-  const frontFace = cartaOponenteJugada.children[1];
 
-  cartaOponenteJugada.setAttribute("id", cartaJugadaOponente);
-  frontFace.style.backgroundImage = `url("./assets/img/mazo/3R.svg")`;
+  if (manoOponente.length > 0) {
+    const cartaOponenteJugada = manoOponente[manoOponente.length - 1];
+    const frontFace = cartaOponenteJugada.children[1];
 
-  gsap.fromTo(
-    cartaOponenteJugada,
-    {
-      top: cartaOponenteJugada.getBoundingClientRect().top,
-      left: cartaOponenteJugada.getBoundingClientRect().left,
-      bottom: "unset",
-      rotateX: 0,
-      x: 0,
-      y: 0,
-    },
-    {
-      top: pozo.top,
-      left: pozo.left,
-      bottom: "unset",
-      rotate: -180,
-      rotateX: 180,
-      x: 0,
-      y: 0,
-      duration: time,
-      onComplete: carta.borrarCartaPozo(e, time * 1000),
+    // Eliminar al final, es solo para darle un valor a la carta jugada por el oponente
+    let cartaJugadaOponente = mano[0];
+    // Eliminar al final
+
+    cartaOponenteJugada.setAttribute("id", cartaJugadaOponente);
+    frontFace.style.backgroundImage = `url("./assets/img/mazo/${cartaJugadaOponente.toUpperCase()}.svg")`;
+    // eliminar al final, es para eliminar la primera carta del array mano, que tiene datos de relleno
+    mano.shift();
+    // eliminar al final
+
+    const animcartaOponenteJugada = gsap.fromTo(
+      cartaOponenteJugada,
+      {
+        top: cartaOponenteJugada.getBoundingClientRect().top,
+        left: cartaOponenteJugada.getBoundingClientRect().left,
+        bottom: "unset",
+        rotateX: 0,
+        x: 0,
+        y: 0,
+      },
+      {
+        top: pozo.top,
+        left: pozo.left,
+        bottom: "unset",
+        rotate: -180,
+        rotateX: 180,
+        x: 0,
+        y: 0,
+        duration: time,
+        onCompleteParams: [idJugador, cartaOponenteJugada, manoOponente],
+        onComplete: animOponenteOrdenaCartas,
+      }
+    );
+
+    if (!animcartaOponenteJugada.isActive()) {
+      animcartaOponenteJugada.play();
     }
-  );
-
-  cartaOponenteJugada.classList.add("cartajugada");
-
-  switch (idJugador) {
-    case 2:
-      cartaOponenteJugada.classList.remove("carta-robada", `jugador2`);
-      jugador2.cantidadCartasMano--;
-      jugador2.animReordenarCartas();
-      break;
-    case 3:
-      cartaOponenteJugada.classList.remove("carta-robada", `jugador3`);
-      jugador3.cantidadCartasMano--;
-      jugador3.animReordenarCartas();
-      break;
-    case 4:
-      cartaOponenteJugada.classList.remove("carta-robada", `jugador4`);
-      jugador4.cantidadCartasMano--;
-      jugador4.animReordenarCartas();
-      break;
-
-    default:
-      break;
   }
 }
