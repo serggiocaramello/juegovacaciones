@@ -902,10 +902,10 @@ function oponenteJuegaCarta(e, idJugador, time) {
 //Animacion de Victoria (no se si esto a aqui o en otro script pero necesitaba ver si funcionaba)
 var count = 300;
 particleClass = "particle",
-particleColors = ["#f6e58d", "#ffbe76", "#ff7979", "#badc58"],
+particleColors = ["#0095DA", "#FFDE00", "#00A651", "#EC1C24"],
 container = document.getElementById("container"),
-w = container.offsetWidth,
-h = container.offsetHeight
+w = window.innerWidth,
+h = window.innerHeight;
 
 for (var i = 0; i < count; i++ ){
     elem = document.createElement('div');
@@ -976,5 +976,5 @@ const modalVictoria = document.getElementById("modalvictoria");
 const botonVictoria = document.getElementById("btn-modal");
 
 botonVictoria.addEventListener("click", () => {
-  modalVictoria.style.display = "block"
+  modalVictoria.style.display = "flex"
 })
