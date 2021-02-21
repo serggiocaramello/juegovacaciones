@@ -12,40 +12,70 @@ let deckI = [
     "1g", "2g", "3g", "4g", "5g", "6g", "7g", "8g", "9g",
 ]
 
-/* Acá creamos mazos de 5 cartas */
-let deck1 = _.sampleSize(deckI, 5);
-let deckR = _.difference(deckI, deck1);
-let deck2 = _.sampleSize(deckR, 5);
-deckR = _.difference(deckR, deck2);
-let deck3 = _.sampleSize(deckR, 5);
-deckR = _.difference(deckR, deck3);
-let deck4 = _.sampleSize(deckR, 5);
-deckR = _.difference(deckR, deck4);
+let pozo = [];
+let monkey = ["NN", "NN", "NN"];
 
-let cardsTaken = 3;
+/* Acá creamos mazos de 5 cartas */
+let deck1 = _.sampleSize(deckI, 7);
+let deckR = _.difference(deckI, deck1);
+deck1.splice(1, 0, ...monkey);
+deck1.splice(5, 0, ...monkey);
+deck1.splice(9, 0, ...monkey);
+deck1.splice(13, 0, ...monkey);
+deck1.splice(17, 0, ...monkey);
+deck1.splice(21, 0, ...monkey);
+deck1.splice(25, 0, ...monkey);
+let deck2 = _.sampleSize(deckR, 7);
+deckR = _.difference(deckR, deck2);
+deck2.splice(1, 0, ...monkey);
+deck2.splice(5, 0, ...monkey);
+deck2.splice(9, 0, ...monkey);
+deck2.splice(13, 0, ...monkey);
+deck2.splice(17, 0, ...monkey);
+deck2.splice(21, 0, ...monkey);
+deck2.splice(25, 0, ...monkey);
+let deck3 = _.sampleSize(deckR, 7);
+deckR = _.difference(deckR, deck3);
+deck3.splice(1, 0, ...monkey);
+deck3.splice(5, 0, ...monkey);
+deck3.splice(9, 0, ...monkey);
+deck3.splice(13, 0, ...monkey);
+deck3.splice(17, 0, ...monkey);
+deck3.splice(21, 0, ...monkey);
+deck3.splice(25, 0, ...monkey);
+let deck4 = _.sampleSize(deckR, 7);
+deckR = _.difference(deckR, deck4);
+deck4.splice(1, 0, ...monkey);
+deck4.splice(5, 0, ...monkey);
+deck4.splice(9, 0, ...monkey);
+deck4.splice(13, 0, ...monkey);
+deck4.splice(17, 0, ...monkey);
+deck4.splice(21, 0, ...monkey);
+deck4.splice(25, 0, ...monkey);
+
+let cardsTaken = 1;
+let cardsSended3 = "";
 
 let cardsSended = _.sampleSize(deckR, cardsTaken);
 deckR = _.difference(deckR, cardsSended);
 
+
 const erradicate = () => {
-    let cardsTaken2 = 5;
-    let cardsSended3 = _.sampleSize(deckR, cardsTaken2);
-    deckR = _.difference(deckR, cardsSended3);
-    console.log(deckR)
-    return cardsSended3
-
+    if (deckR.length == 0) {
+        deckR.push(...pozo)
+        let cardsTaken2 = 1;
+        let cardsSended3 = _.sampleSize(deckR, cardsTaken2);
+        deckR = _.difference(deckR, cardsSended3);
+        console.log(cardsSended3)
+        return cardsSended3
+    } else {
+        let cardsTaken2 = 1;
+        let cardsSended3 = _.sampleSize(deckR, cardsTaken2);
+        deckR = _.difference(deckR, cardsSended3);
+        console.log(cardsSended3)
+        return cardsSended3
+    }
 };
-
-const erradicate1 = () => {
-    let cardsSended3 = _.sampleSize(deckR, 1);
-    deckR = _.difference(deckR, cardsSended3);
-    console.log(deckR)
-    return cardsSended3
-
-};
-
-
-
 
 
 

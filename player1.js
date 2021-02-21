@@ -46,39 +46,44 @@ socket.on('inicioTurno', turno => {
 /* Lógica Primer Turno */
 
 
-function jugadaInicial() {
-    pidocarta(); /* Carta del server */
-    cartaPozo(); /* Representación Gráfica */
-    switch (cartaPozo) {
-        case cartaPozo == '+2':
-            pidocarta();
-            pidocarta();
-            finTurno();
-            break;
-        case cartaPozo == '+4':
-            devolver4();
-            jugadaInicial();
-            break;
-        case cartaPozo == 'V':
-            finTurno('V');
-            break;
-        case cartaPozo == 'SK':
-            finTurno('SK');
-            break;
-        case cartaPozo == 'WD':
-            elegirColor();
-            jugarTurno();
-            break;
-        default:
-            jugarTurno();
+
+async function jugadaInicial() {
+
+    try {
+        const a = reparticionCartas(7, 0.01);
+        mazoCartas = [
+            "2g"
+        ];
+        const c = carta.primeraCartaPozo();
+        jugador1.seleccionarCarta(turno)
+        ++turno
+        jugador1.seleccionarCarta(turno)
+
+
+
+
+
+    }
+
+    catch (e) {
+
+    }
+}
+
+
+
+
+
+function comprobar() {
+    if (carta.cartaPozo == "3R") {
+        reparticionCartas(2, 0.3);
+    } else {
+        console.log("es invalida")
     }
 }
 
 /* Lógica Jugar Turno */
 
-function jugarTurno() {
-    contadorTiempo();
-}
 
 
 
@@ -115,6 +120,20 @@ function jugarTurno() {
 
 /* Playground */
 
+socket.on("mazoInicial", deck1 => {
+    console.log(deck1)
+    mazoCartas = deck1
+    /* $('.pozo').append(cartaJugada); */
+});
+
+function pedirMazo() {
+    jugador = 1;
+    socket.emit('pedirMazo', jugador);
+}
+
+pedirMazo()
+setTimeout((() => { jugadaInicial() }), 2000);
+
 const test7 = $('.test7').onclick = () => {
     usuario = 1;
     socket.emit('usuario', usuario);
@@ -127,10 +146,14 @@ const test7 = $('.test7').onclick = () => {
 /* Emisiones */
 
 /* 1.- Emitir turno de juego */
-const test1 = $('.test1').onclick = () => {
-    turno = $('#test-input').value
-    socket.emit('inicioTurno', turno);
+
+function inicioTurno() { socket.emit('inicioTurno', 2); }
+
+function cambiarTurno() {
+    console.log("cambio turno y robaste2")
+    socket.emit('cambiarTurno', turno)
 }
+
 
 /* 2.- Emitir Carta Jugada */
 
@@ -167,17 +190,13 @@ const test5 = $('.test5').onclick = () => {
 
 /* Recepciones */
 
-/* 1.- Actualizar turno de juego */
+/* 1.- Actualizar turno de juego  */
 
-/* socket.on("actualizarTurno", valor => {
-    turno = valor
-    if (turno == 1) {
-        inicioTurno();
-    } else {
-        mostrarTurno();
-    }
+socket.on("actualizarTurno", valor => {
+    turno = valor;
+    console.log("el nuevo turno es")
     return turno
-}); */
+});
 
 /* 2.- Actualizar carta Jugada */
 

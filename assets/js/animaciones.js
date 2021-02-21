@@ -6,33 +6,15 @@ const displayEmoticon = document.getElementById("display-emoticon");
 const displayNombre = document.getElementById("display-nombre");
 let cantidadCartasPozo = 0;
 // Mazo de prueba, funciona con mayusculas y minusculas.
-const mazoCartas = [
-  "1r",
-  "VR",
-  "+4r",
-  "SKY",
-  "2b",
-  "5B",
-  "4y",
-  "3G",
-  "0Y",
-  "8R",
-  "5G",
-  "9B",
-  "3R",
-  "1Y",
-  "3Y",
-  "1B",
-  "0R",
-  "0B",
-  "0G",
+let mazoCartas = [
+
 ];
 
 //Indicamos quien esta jugando en este equipo.
 // En este caso el jugdor 1 es quien juega en este equipo.
 const jugadorEsteEquipo = 1;
 // Indicamos que jugador esta jugando en este turno.
-let turno = 1;
+let turno = 0;
 // En sentido horario incremento es = 1, en antihorario debe cambiar a -1.
 let incremento = 1;
 
@@ -179,6 +161,8 @@ class Carta {
         x: 0,
         duration: 1,
         ease: "back.out(1.2)",
+
+        onComplete: () => { gameContador.start(); }
       }
     );
 
@@ -525,7 +509,11 @@ class Jugador {
     });
   }
 
+
+
+
   animSeleccionarCarta(e) {
+
     let idCarta = e.target.parentElement.getAttribute("id");
     // let mazo = document.getElementById("mazo").getBoundingClientRect();
     let pozo = document.getElementById("pozo").getBoundingClientRect();
@@ -564,35 +552,72 @@ class Jugador {
     }
   }
 
-  seleccionarCarta() {
-    // carta.cartasActivas son las cartas que tiene en la mano el jugador.
-    carta.cartasActivas.map((cartaActiva) => {
-      cartaActiva.addEventListener(
-        "click",
-        (e) => {
-          let listadoClasesCarta = Array.from(e.target.parentElement.classList);
-          if (listadoClasesCarta.includes(`jugador${jugadorEsteEquipo}`)) {
-            this.cantidadCartasMano--;
-            cantidadCartasPozo++;
-            e.target.parentElement.classList.add("cartajugada");
+  seleccionarCarta(turno) {
+    if (turno == 0) {
+      // carta.cartasActivas son las cartas que tiene en la mano el jugador.
+      carta.cartasActivas.map((cartaActiva) => {
+        cartaActiva.addEventListener(
+          "click",
+          (e) => {
+            let listadoClasesCarta = Array.from(e.target.parentElement.classList);
+            if (listadoClasesCarta.includes(`jugador${jugadorEsteEquipo}`) && turno == 1) {
+              this.cantidadCartasMano--;
+              cantidadCartasPozo++;
+              e.target.parentElement.classList.add("cartajugada");
 
-            // Animacion cuando carta seleccionada va al pozo
-            this.animSeleccionarCarta(e);
+              // Animacion cuando carta seleccionada va al pozo
+              this.animSeleccionarCarta(e);
 
-            // Se elimina la clase "carta-robada"
-            e.target.parentElement.classList.remove(
-              "carta-robada",
-              `jugador${this.idJugador}`
-            );
+              // Se elimina la clase "carta-robada"
+              e.target.parentElement.classList.remove(
+                "carta-robada",
+                `jugador${this.idJugador}`
+              );
 
-            // Para que las cartas de la mano se reordenen
-            this.animReordenarCartas();
-          }
-        },
-        true
-      );
-    });
+              // Para que las cartas de la mano se reordenen
+              this.animReordenarCartas();
+            }
+          },
+          true
+        );
+      });
+
+    } else {
+      if (turno == 0)
+        console.log("hola1")
+      // carta.cartasActivas son las cartas que tiene en la mano el jugador.
+      carta.cartasActivas.map((cartaActiva) => {
+        cartaActiva.addEventListener(
+          "click",
+          (e) => {
+            let listadoClasesCarta = Array.from(e.target.parentElement.classList);
+            if (listadoClasesCarta.includes(`jugador${jugadorEsteEquipo}`) && turno == 1) {
+              this.cantidadCartasMano--;
+              cantidadCartasPozo++;
+              e.target.parentElement.classList.add("cartajugada");
+
+              // Animacion cuando carta seleccionada va al pozo
+              this.animSeleccionarCarta(e);
+
+              // Se elimina la clase "carta-robada"
+              e.target.parentElement.classList.remove(
+                "carta-robada",
+                `jugador${this.idJugador}`
+              );
+
+              // Para que las cartas de la mano se reordenen
+              this.animReordenarCartas();
+            }
+            inicioTurno();
+          },
+          true
+        );
+      });
+
+    }
   }
+
+
 
   animVolteaJuego() {
     gsap.to(".flecha1", {
@@ -656,17 +681,9 @@ carta.setColor();
 carta.setNumero();
 
 // Creación de jugadores
-const jugador1 = new Jugador(
-  1,
-  "Leonardo",
-  "assets/img/avatares/01-mexican.svg"
-);
+const jugador1 = new Jugador(1, "Leonardo", "assets/img/avatares/01-mexican.svg");
 const jugador2 = new Jugador(2, "Raphael", "assets/img/avatares/02-man.svg");
-const jugador3 = new Jugador(
-  3,
-  "Miguel Ángel",
-  "assets/img/avatares/03-pirates.svg"
-);
+const jugador3 = new Jugador(3, "Miguel Ángel", "assets/img/avatares/03-pirates.svg");
 const jugador4 = new Jugador(4, "Donatello", "assets/img/avatares/04-girl.svg");
 const jugadores = [jugador1, jugador2, jugador3, jugador4];
 /* const jugadores = [jugador1, jugador2, jugador3]; */
@@ -685,23 +702,16 @@ jugadores.map((jugador) => {
 
 // Al presionar el mazo
 mazo.addEventListener("click", () => {
-  switch (turno) {
-    case 1:
-      jugador1.turno();
-      break;
-    case 2:
-      jugador2.turno();
-      break;
-    case 3:
-      jugador3.turno();
-      break;
-    case 4:
-      jugador4.turno();
-      break;
-    default:
-      break;
+  if (turno == 1) {
+    jugador1.turno();
+    turno++
+    inicioTurno();
   }
-});
+  else {
+    alert("no es tu turno")
+  }
+}
+);
 
 class Contador {
   constructor(time) {
@@ -726,6 +736,7 @@ class Contador {
     }
     if (this.seconds == 0) {
       this.finalCountdown = true;
+
     } else {
       this.isWaiting = true;
       this.seconds--;
@@ -736,22 +747,27 @@ class Contador {
   }
   reset() {
     this.seconds = this.initialSeconds;
+
     document.getElementById("waiting_time").classList.remove("timealert");
   }
 }
 
 // Nueva instancia de contador
-const gameContador = new Contador(20);
+
 // Iniciar gameContador
-gameContador.start();
+/* gameContador.start(); */
 
 // To do
 // Implementar para 2 jugadores y 3 jugadores
 
 /* Nuevos Métodos */
 
-reparticionCartas(2, 0.3);
-carta.primeraCartaPozo();
+/* reparticionCartas(2, 0.3);
+carta.primeraCartaPozo() */
+/* const gameContador = new Contador(20);
+        gameContador.start(); */
+const gameContador = new Contador(20);
+
 
 function reparticionCartas(num, tiempo) {
   for (let i = 1; i <= num; i++) {
@@ -784,43 +800,43 @@ function animPintarCarta2() {
 
 // Al seleccionar emoticon
 let emoticones = Array.from(document.querySelectorAll(".emoticon"));
-emoticones.map(emoticon =>{
+emoticones.map(emoticon => {
   emoticon.addEventListener("click", (e) => {
     imprimirEmoticon(e.target)
   })
 })
 // Imprime emoticon seleccionado al centro del tablero
-function imprimirEmoticon(el){
+function imprimirEmoticon(el) {
   let emoticonSeleccionado = el;
   srcEmoticon = emoticonSeleccionado.getAttribute("src");
   displayEmoticon.style.backgroundImage = `url("./${srcEmoticon}")`
   displayNombre.textContent = jugador1.nombre;
-  gsap.fromTo(displayEmoticon,{
+  gsap.fromTo(displayEmoticon, {
     opacity: 0,
     duration: 1
-    },
+  },
     {
-    opacity: 1,
-    duration: 1
+      opacity: 1,
+      duration: 1
     });
-  gsap.fromTo(displayNombre,{
+  gsap.fromTo(displayNombre, {
     opacity: 0,
     duration: 0.5,
   },
-  {
-    opacity: 1,
-    duration: 0.5,
-  });  
-  gsap.to(displayEmoticon,{
+    {
+      opacity: 1,
+      duration: 0.5,
+    });
+  gsap.to(displayEmoticon, {
     opacity: 0,
     duration: 0.3,
     delay: 1.5
   });
-  gsap.to(displayNombre,{
+  gsap.to(displayNombre, {
     opacity: 0,
     duration: 0.3,
     delay: 1.5
-  });       
+  });
 }
 
 
@@ -902,52 +918,52 @@ function oponenteJuegaCarta(e, idJugador, time) {
 //Animacion de Victoria (no se si esto a aqui o en otro script pero necesitaba ver si funcionaba)
 var count = 300;
 particleClass = "particle",
-particleColors = ["#f6e58d", "#ffbe76", "#ff7979", "#badc58"],
-container = document.getElementById("container"),
-w = container.offsetWidth,
-h = container.offsetHeight
+  particleColors = ["#f6e58d", "#ffbe76", "#ff7979", "#badc58"],
+  container = document.getElementById("container"),
+  w = container.offsetWidth,
+  h = container.offsetHeight
 
-for (var i = 0; i < count; i++ ){
-    elem = document.createElement('div');
-    elem.className = particleClass;
-    container.appendChild(elem);
-    gsap.set(elem, {
-        x: gsap.utils.random(0, w),
-        y: gsap.utils.random(0, h) - (h*0.5),
-        scale: gsap.utils.random(0.5, 1),
-        backgroundColor : gsap.utils.random(particleColors)
-    });
-    anime(elem); 
+for (var i = 0; i < count; i++) {
+  elem = document.createElement('div');
+  elem.className = particleClass;
+  container.appendChild(elem);
+  gsap.set(elem, {
+    x: gsap.utils.random(0, w),
+    y: gsap.utils.random(0, h) - (h * 0.5),
+    scale: gsap.utils.random(0.5, 1),
+    backgroundColor: gsap.utils.random(particleColors)
+  });
+  anime(elem);
 }
 
 function anime(elem) {
-    gsap.to(elem, gsap.utils.random(5, 10),{
-        y: h,
-        ease: "none",
-        repeat: -10,
-    });
-    gsap.to(elem, gsap.utils.random(1, 6),{
-        x: "+=50",
-        ease: "power1.inOut",
-        repeat: -1,
-        yoyo: true,
-    });
-    gsap.to(elem, gsap.utils.random(1, 2),{
-        opacity: 20,
-        ease: "power1.inOut",
-        repeat: -1,
-        yoyo: true,
-    });
+  gsap.to(elem, gsap.utils.random(5, 10), {
+    y: h,
+    ease: "none",
+    repeat: -10,
+  });
+  gsap.to(elem, gsap.utils.random(1, 6), {
+    x: "+=50",
+    ease: "power1.inOut",
+    repeat: -1,
+    yoyo: true,
+  });
+  gsap.to(elem, gsap.utils.random(1, 2), {
+    opacity: 20,
+    ease: "power1.inOut",
+    repeat: -1,
+    yoyo: true,
+  });
 };
 
 var quote = document.getElementById("quote"),
-arr = quote.innerText.split(""),
-texto ="";
+  arr = quote.innerText.split(""),
+  texto = "";
 
-for (var i = 0; i < arr.length; i++){
-    texto += "<span>" + arr[i] + "</span>";
-    };
-    
+for (var i = 0; i < arr.length; i++) {
+  texto += "<span>" + arr[i] + "</span>";
+};
+
 quote.innerHTML = texto;
 
 var chars = quote.getElementsByTagName("span");
@@ -962,14 +978,14 @@ textShadowValue += "0 0 0.9rem hsl(360, 70%, 30%)";
 var duration = 2;
 
 for (var j = 0; j < chars.length; j++) {
-    gsap.to(chars[j],{
-        duration: duration,
-        repeat: -1,
-        ease: "none",
-        color: colorValue,
-        textShadow: textShadowValue,
-        delay: j * (duration/ chars.length)
-    });
+  gsap.to(chars[j], {
+    duration: duration,
+    repeat: -1,
+    ease: "none",
+    color: colorValue,
+    textShadow: textShadowValue,
+    delay: j * (duration / chars.length)
+  });
 }
 
 const modalVictoria = document.getElementById("modalvictoria");

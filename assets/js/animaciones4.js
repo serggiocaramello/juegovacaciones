@@ -656,10 +656,10 @@ carta.setColor();
 carta.setNumero();
 
 // Creación de jugadores
-const jugador1 = new Jugador(4, "Leonardo", "assets/img/avatares/01-mexican.svg");
-const jugador2 = new Jugador(1, "Raphael", "assets/img/avatares/02-man.svg");
-const jugador3 = new Jugador(2, "Miguel Ángel", "assets/img/avatares/03-pirates.svg");
-const jugador4 = new Jugador(3, "Donatello", "assets/img/avatares/04-girl.svg");
+const jugador1 = new Jugador(2, "Leonardo", "assets/img/avatares/01-mexican.svg");
+const jugador2 = new Jugador(3, "Raphael", "assets/img/avatares/02-man.svg");
+const jugador3 = new Jugador(4, "Miguel Ángel", "assets/img/avatares/03-pirates.svg");
+const jugador4 = new Jugador(1, "Donatello", "assets/img/avatares/04-girl.svg");
 const jugadores = [jugador1, jugador2, jugador3, jugador4];
 /* const jugadores = [jugador1, jugador2, jugador3]; */
 

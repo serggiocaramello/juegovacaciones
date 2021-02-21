@@ -15,11 +15,6 @@ app.use(cors());
 const port = 3000;
 
 
-/* Epsagon Calcetines */
-
-
-
-
 /* Server Http */
 
 
@@ -48,15 +43,32 @@ io.on('connection', (socket) => {
     });
 
 
-
-
     socket.on('inicioTurno', (turno) => {
-        socket.broadcast.emit("actualizarTurno", turno);
+        socket.emit("actualizarTurno", turno);
         console.log("turno actualizado a: " + turno)
-        console.log(conectados)
     });
 
+    /* Inicio del Juego */
 
+    socket.on('pedirMazo', (jugador) => {
+        switch (jugador) {
+            case 1:
+                socket.emit("mazoInicial", deck1);
+                break;
+            case 2:
+                socket.emit("mazoInicial", deck2);
+                break;
+            case 3:
+                socket.emit("mazoInicial", deck3);
+                break;
+            case 4:
+                socket.emit("mazoInicial", deck4);
+                break;
+
+            default:
+                break;
+        }
+    });
 
 
 
