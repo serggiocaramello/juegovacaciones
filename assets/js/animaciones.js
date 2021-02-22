@@ -316,10 +316,16 @@ class Jugador {
 
       for (var i = 0, l = items.length; i < l; i++) {
         items[i].style.left =
-          (50 - 35 * Math.cos(-0.5 * Math.PI - 2 * (1 / l) * i * Math.PI)).toFixed(4) + "%";
+          (
+            50 -
+            35 * Math.cos(-0.5 * Math.PI - 2 * (1 / l) * i * Math.PI)
+          ).toFixed(4) + "%";
 
         items[i].style.top =
-          (54 + 35 * Math.sin(-0.5 * Math.PI - 2 * (1 / l) * i * Math.PI)).toFixed(4) + "%";
+          (
+            54 +
+            35 * Math.sin(-0.5 * Math.PI - 2 * (1 / l) * i * Math.PI)
+          ).toFixed(4) + "%";
       }
       document.querySelector(".menu-button").onclick = function (e) {
         e.preventDefault();
@@ -335,7 +341,6 @@ class Jugador {
     const frontFace = document.createElement("div");
     backFace.classList.add("back-face");
     frontFace.classList.add("front-face");
-
     newCard.appendChild(backFace);
     newCard.appendChild(frontFace);
 
@@ -522,40 +527,29 @@ class Jugador {
     let idCarta = e.target.parentElement.getAttribute("id");
     let pozo = document.getElementById("pozo").getBoundingClientRect();
     let cartaSeleccionada = e.target.parentElement.getBoundingClientRect();
+    const cartaPozo = document.getElementById(carta.cartaPozo);
     // Tiempo que dura la animación
     const time = 0.5;
-    tl.fromTo(
+    gsap.fromTo(
       `[id='${idCarta}']`,
       {
         top: cartaSeleccionada.top,
-        bottom: "unset",
+        bottom: cartaSeleccionada.bottom,
         x: 0,
         y: 0,
       },
       {
         top: pozo.top,
-        bottom: "unset",
+        bottom: pozo.bottom,
         x: 0,
         y: 0,
         left: pozo.left,
         duration: time,
-        onComplete: () => {
-          // Se elimina la clase "carta-robada"
-          e.target.parentElement.classList.remove(
-            "carta-robada",
-            `jugador${this.idJugador}`
-          );
-          // Se borra la carta anterior del pozo
-          // carta.borrarCartaPozo(e);
-          console.log(carta.cartaPozo);
-          document.getElementById(carta.cartaPozo).remove();
-          carta.cartaPozo = idCarta;
-          carta.setCartaPozoInfo();
-          // Para que las cartas de la mano se reordenen
-          this.animReordenarCartas();
-        },
+        onCompleteParams: [e, cartaPozo, idCarta],
+        onComplete: this.animationOnComplete,
       }
     );
+
     if (carta.cartasCambioSentido.includes(idCarta)) {
       // Si la carta es un cambio de sentido, cambia el sentido del juego
       this.animVolteaJuego();
@@ -571,24 +565,43 @@ class Jugador {
     }
   }
 
+  animationOnComplete = (e, cartaPozo, idCarta) => {
+    // Se elimina la clase "carta-robada"
+    e.target.parentElement.classList.remove(
+      "carta-robada",
+      `jugador${this.idJugador}`
+    );
+    // Se vuelven a contar las cartas de la mano
+    // console.log(this);
+    this.manoDeCartas = Array.from(
+      document.querySelectorAll(`.jugador${this.idJugador}`)
+    );
+    // Se borra la carta anterior del pozo
+    cartaPozo.remove();
+    carta.cartaPozo = idCarta;
+    carta.setCartaPozoInfo();
+    // Para que las cartas de la mano se reordenen
+    this.animReordenarCartas();
+  };
+
   seleccionarCarta() {
+    // carta.cartasActivas = Array.from(
+    //   document.querySelectorAll(`.jugador${jugadorEsteEquipo}`)
+    // );
     // carta.cartasActivas son las cartas que tiene en la mano el jugador.
     carta.cartasActivas.map((cartaActiva) => {
-      cartaActiva.addEventListener(
-        "click",
-        (e) => {
-          let listadoClasesCarta = Array.from(e.target.parentElement.classList);
-          if (listadoClasesCarta.includes(`jugador${jugadorEsteEquipo}`)) {
-            this.cantidadCartasMano--;
-            cantidadCartasPozo++;
-            e.target.parentElement.classList.add("cartajugada");
-
-            // Animacion cuando carta seleccionada va al pozo
-            this.animSeleccionarCarta(e);
-          }
-        },
-        true
-      );
+      cartaActiva.addEventListener("click", (e) => {
+        console.log(e.target);
+        // let listadoClasesCarta = Array.from(e.target.parentElement.classList);
+        // if (listadoClasesCarta.includes(`jugador${jugadorEsteEquipo}`)) {
+        //   this.cantidadCartasMano--;
+        //   // cantidadCartasPozo++;
+        //   e.target.parentElement.classList.add("cartajugada");
+        //   console.log("pepito");
+        //   // Animacion cuando carta seleccionada va al pozo
+        //   this.animSeleccionarCarta(e);
+        // }
+      });
     });
   }
 
@@ -622,7 +635,7 @@ class Jugador {
 
   turno() {
     this.robarCarta(0.8);
-    this.seleccionarCarta();
+    // this.seleccionarCarta();
   }
 }
 
@@ -782,45 +795,50 @@ function animPintarCarta2() {
 
 // Al seleccionar emoticon
 let emoticones = Array.from(document.querySelectorAll(".emoticon"));
-emoticones.map(emoticon =>{
+emoticones.map((emoticon) => {
   emoticon.addEventListener("click", (e) => {
-    imprimirEmoticon(e.target)
-  })
-})
+    imprimirEmoticon(e.target);
+  });
+});
 // Imprime emoticon seleccionado al centro del tablero
-function imprimirEmoticon(el){
+function imprimirEmoticon(el) {
   let emoticonSeleccionado = el;
   srcEmoticon = emoticonSeleccionado.getAttribute("src");
-  displayEmoticon.style.backgroundImage = `url("./${srcEmoticon}")`
+  displayEmoticon.style.backgroundImage = `url("./${srcEmoticon}")`;
   displayNombre.textContent = jugador1.nombre;
-  gsap.fromTo(displayEmoticon,{
-    opacity: 0,
-    duration: 1
+  gsap.fromTo(
+    displayEmoticon,
+    {
+      opacity: 0,
+      duration: 1,
     },
     {
-    opacity: 1,
-    duration: 1
-    });
-  gsap.fromTo(displayNombre,{
-    opacity: 0,
-    duration: 0.5,
-  },
-  {
-    opacity: 1,
-    duration: 0.5,
-  });  
-  gsap.to(displayEmoticon,{
+      opacity: 1,
+      duration: 1,
+    }
+  );
+  gsap.fromTo(
+    displayNombre,
+    {
+      opacity: 0,
+      duration: 0.5,
+    },
+    {
+      opacity: 1,
+      duration: 0.5,
+    }
+  );
+  gsap.to(displayEmoticon, {
     opacity: 0,
     duration: 0.3,
-    delay: 1.5
+    delay: 1.5,
   });
-  gsap.to(displayNombre,{
+  gsap.to(displayNombre, {
     opacity: 0,
     duration: 0.3,
-    delay: 1.5
-  });       
+    delay: 1.5,
+  });
 }
-
 
 // Simulacion de oponentes jugando cartas
 const manoOponente2 = Array.from(document.querySelectorAll(`.jugador2`));
@@ -878,6 +896,7 @@ function animOponenteOrdenaCartas(idJugador, cartOpJugada, manoOponente) {
         posCarta += +carta.anchoCarta + carta.separacionCartas;
         break;
       case 4:
+        jugador4.cantidadCartasMano--;
         tl.to(cartaEnMano, {
           duration: 0.15,
           y: -posCarta,
@@ -942,53 +961,53 @@ function oponenteJuegaCarta(idJugador, time) {
 }
 //Animacion de Victoria (no se si esto a aqui o en otro script pero necesitaba ver si funcionaba)
 var count = 300;
-particleClass = "particle",
-particleColors = ["#0095DA", "#FFDE00", "#00A651", "#EC1C24"],
-container = document.getElementById("container"),
-w = window.innerWidth,
-h = window.innerHeight;
+(particleClass = "particle"),
+  (particleColors = ["#0095DA", "#FFDE00", "#00A651", "#EC1C24"]),
+  (container = document.getElementById("container")),
+  (w = window.innerWidth),
+  (h = window.innerHeight);
 
-for (var i = 0; i < count; i++ ){
-    elem = document.createElement('div');
-    elem.className = particleClass;
-    container.appendChild(elem);
-    gsap.set(elem, {
-        x: gsap.utils.random(0, w),
-        y: gsap.utils.random(0, h) - (h*0.5),
-        scale: gsap.utils.random(0.5, 1),
-        backgroundColor : gsap.utils.random(particleColors)
-    });
-    anime(elem); 
+for (var i = 0; i < count; i++) {
+  elem = document.createElement("div");
+  elem.className = particleClass;
+  container.appendChild(elem);
+  gsap.set(elem, {
+    x: gsap.utils.random(0, w),
+    y: gsap.utils.random(0, h) - h * 0.5,
+    scale: gsap.utils.random(0.5, 1),
+    backgroundColor: gsap.utils.random(particleColors),
+  });
+  anime(elem);
 }
 
 function anime(elem) {
-    gsap.to(elem, gsap.utils.random(5, 10),{
-        y: h,
-        ease: "none",
-        repeat: -10,
-    });
-    gsap.to(elem, gsap.utils.random(1, 6),{
-        x: "+=50",
-        ease: "power1.inOut",
-        repeat: -1,
-        yoyo: true,
-    });
-    gsap.to(elem, gsap.utils.random(1, 2),{
-        opacity: 20,
-        ease: "power1.inOut",
-        repeat: -1,
-        yoyo: true,
-    });
-};
+  gsap.to(elem, gsap.utils.random(5, 10), {
+    y: h,
+    ease: "none",
+    repeat: -10,
+  });
+  gsap.to(elem, gsap.utils.random(1, 6), {
+    x: "+=50",
+    ease: "power1.inOut",
+    repeat: -1,
+    yoyo: true,
+  });
+  gsap.to(elem, gsap.utils.random(1, 2), {
+    opacity: 20,
+    ease: "power1.inOut",
+    repeat: -1,
+    yoyo: true,
+  });
+}
 
 var quote = document.getElementById("quote"),
-arr = quote.innerText.split(""),
-texto ="";
+  arr = quote.innerText.split(""),
+  texto = "";
 
-for (var i = 0; i < arr.length; i++){
-    texto += "<span>" + arr[i] + "</span>";
-    };
-    
+for (var i = 0; i < arr.length; i++) {
+  texto += "<span>" + arr[i] + "</span>";
+}
+
 quote.innerHTML = texto;
 
 var chars = quote.getElementsByTagName("span");
@@ -1003,19 +1022,19 @@ textShadowValue += "0 0 0.9rem hsl(360, 70%, 30%)";
 var duration = 2;
 
 for (var j = 0; j < chars.length; j++) {
-    gsap.to(chars[j],{
-        duration: duration,
-        repeat: -1,
-        ease: "none",
-        color: colorValue,
-        textShadow: textShadowValue,
-        delay: j * (duration/ chars.length)
-    });
+  gsap.to(chars[j], {
+    duration: duration,
+    repeat: -1,
+    ease: "none",
+    color: colorValue,
+    textShadow: textShadowValue,
+    delay: j * (duration / chars.length),
+  });
 }
 
 const modalVictoria = document.getElementById("modalvictoria");
 const botonVictoria = document.getElementById("btn-modal");
 
 botonVictoria.addEventListener("click", () => {
-  modalVictoria.style.display = "flex"
-})
+  modalVictoria.style.display = "flex";
+});
