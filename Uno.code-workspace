@@ -1,0 +1,13 @@
+{
+  "folders": [
+	{
+		"path": "."
+	}
+],
+  "settings": {
+    "liveServer.settings.multiRootWorkspaceName": "uno",
+    "faunadb.adminSecretKey": "fnAD7b1OMrACCOlGhhTNxC7c2rAgAsOdMEu4hrrG",
+    "git.ignoreLimitWarning": true,
+    "vue3snippets.enable-compile-vue-file-on-did-save-code": true
+  }
+}

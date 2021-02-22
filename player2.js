@@ -13,7 +13,7 @@ NodeList.prototype.__proto__ = Array.prototype;
 
 
 /* Constantes */
-const socket = io('ws://localhost:8080');
+const socket = io('ws://localhost:4000');
 let direccionReloj = true;
 let nextTurno = (direccionReloj == true) ? 2 : 4;
 let saltoTurno = 3;
