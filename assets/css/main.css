@@ -407,6 +407,7 @@ body {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  overflow: hidden;
 }
 
 .tablero {
@@ -741,6 +742,7 @@ body {
   margin: 0;
   padding: 0;
   color: white;
+  font-size: 2vw;
 }
 
 .opacidad {
@@ -762,12 +764,12 @@ body {
 }
 
 .titulo {
-  font-size: 25pt;
+  font-size: 3vw;
   margin: 0;
 }
 
 .subtitulo {
-  font-size: 15pt;
+  font-size: 3vh;
 }
 
 main {
@@ -781,7 +783,7 @@ main {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  height: 50%;
+  max-height: 50%;
 }
 
 .login-menu {
@@ -809,6 +811,7 @@ main {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
+  max-width: 40%;
 }
 
 .avatarseleccionado {
@@ -829,17 +832,36 @@ main {
 }
 
 .av {
-  width: 40px;
-  height: 40px;
+  max-width: 15%;
   padding: 1vw;
   cursor: pointer;
+}
+
+::-webkit-input-placeholder {
+  font-size: 3vh;
+  text-align: center;
+}
+
+:-ms-input-placeholder {
+  font-size: 3vh;
+  text-align: center;
+}
+
+::-ms-input-placeholder {
+  font-size: 3vh;
+  text-align: center;
+}
+
+::placeholder {
+  font-size: 3vh;
+  text-align: center;
 }
 
 .login-button {
   background-color: #585858;
   color: white;
   text-decoration: none;
-  padding: 0.5rem;
+  padding: 0.5vh;
   border: 2px solid black;
   border-radius: 0.3vw;
   margin-top: 2vh;
@@ -855,11 +877,11 @@ main {
 }
 
 .informacion-jugadores {
-  width: 30%;
+  width: 35%;
 }
 
 .avatarjugador {
-  height: 3.5vw;
+  height: 4vw;
   -ms-flex-item-align: center;
       -ms-grid-row-align: center;
       align-self: center;
@@ -887,7 +909,7 @@ main {
 }
 
 .estado-jugador-pendiente {
-  width: 7vw;
+  width: 11vw;
   background-color: yellow;
   border: solid 1px black;
   padding: 0.5vw;
@@ -896,7 +918,7 @@ main {
 }
 
 .estado-jugador-listo {
-  width: 7vw;
+  width: 11vw;
   background-color: #016d06;
   border: solid 1px black;
   padding: 0.5vw;
@@ -942,7 +964,7 @@ main {
   padding: 0;
   margin: 0;
   height: 100vh;
-  width: 100vw;
+  width: 100%;
   display: none;
   -webkit-box-pack: center;
       -ms-flex-pack: center;
@@ -956,8 +978,8 @@ main {
 
 .logouno {
   position: absolute;
-  width: 30vw;
-  top: 20vh;
+  height: 40%;
+  top: 15vh;
   z-index: 80;
 }
 
@@ -992,7 +1014,7 @@ main {
 }
 
 .text-effects > p {
-  font-size: 5em;
+  font-size: 5vw;
   font-family: acme;
   position: absolute;
   top: 60vh;

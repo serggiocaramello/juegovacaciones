@@ -5,7 +5,7 @@
     padding:0;
     margin:0;
     height: 100vh;
-    width: 100vw;
+    width: 100%;
     display: none;
     justify-content: center;
     align-items: center;
@@ -14,9 +14,10 @@
 }
 .logouno {
     position:absolute;
-    width: 30vw;
-    top: 20vh;
+    height: 40%;
+    top: 15vh;
     z-index: 80;
+    
 }
 #container {
     position: relative;
@@ -41,7 +42,7 @@
     z-index: 1;
 }
 .text-effects > p {
-    font-size: 5em;
+    font-size: 5vw;
     font-family: acme;
     position: absolute;
     top: 60vh;
